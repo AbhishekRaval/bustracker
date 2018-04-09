@@ -1,5 +1,4 @@
 import {createStore, combineReducers} from 'redux';
-import deepFreeze from 'deep-freeze';
 
 /*
 *  state layout:
@@ -137,7 +136,7 @@ function root_reducer(state0, action) {
   let reducer = combineReducers({tasks, users, form, edit_form, login, token,register});
   let state1 = reducer(state0, action);
   // console.log("state1", state1);
-  return deepFreeze(state1);
+  return state1;
 };
 
 let store = createStore(root_reducer);
