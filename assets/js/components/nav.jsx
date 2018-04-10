@@ -45,26 +45,20 @@ let Session = connect(({token}) => {return {token};})((props) => {
 });
 
 function Nav(props) {
-  let session_info;
 
-  if (props.token) {
-    session_info = <Session token={props.token} />;
-  }
-  else {
-    session_info = <LoginForm />
-  }
+  let session_info = <Session token={props.token} />;
 
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand">
       <span className="navbar-brand">
-        μBlog
+        BusTracker
       </span>
       <ul className="navbar-nav mr-auto">
         <NavItem>
-          <NavLink to="/feed" exact={true} activeClassName="active" className="nav-link">Feed</NavLink>
+          <NavLink to="/search" exact={true} activeClassName="active" className="nav-link">Search Bus</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/tasks/new" href="#" className="nav-link">New Task</NavLink>
+          <NavLink to="favourites" href="#" className="nav-link">Favourites</NavLink>
         </NavItem>
       </ul>
       { session_info }

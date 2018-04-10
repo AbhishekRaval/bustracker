@@ -1,6 +1,7 @@
 import store from './store';
 import React from 'react';
 import swal from 'sweetalert'
+import {Socket} from "../../deps/phoenix/assets/js/phoenix";
 
 class ApiFunctions {
   request_tasks() {
@@ -26,51 +27,53 @@ class ApiFunctions {
   }
 
   create_user(data,history){
-    $.ajax("/api/v1/users", {
-      method: "post",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify({user: data}),
-      success: (resp) => {
-        swal("Created Task successfully");
-        store.dispatch({type: 'ADD_USER', user: resp.data});
-        history.push("/");
-      },
-       error: () => {swal("Failed to register, Server Error");}
-    });
+     let socket = new Socket("/socket", {params: {register: data}});
+     socket.connect().success((resp) => {
+       console.log("Socket Connection successful");
+       // TODO
+     })
+         .error(err => {
+             console.log("Socket Connection not successful");
+             // TODO
+         })
   }
 
+    reconnect(token,history){
+        let socket = new Socket("/socket", {params: {token: token}});
+        socket.connect().success((resp) => {
+            console.log("Socket Connection successful");
+            // TODO
+        })
+            .error(err => {
+                console.log("Socket Connection not successful");
+                // TODO
+            })
+    }
 
-  submit_post(data) {
-    $.ajax("/api/v1/tasks", {
-      method: "post",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify({ token: data.token, task: data}),
-      success: (resp) => {
-        swal("Created Task: " + resp.data.name + "successfully");
-        store.dispatch({type: 'ADD_TASK', task: resp.data});
-      },
-       error: () => {swal("Failed to post, Make sure you don't mask data, or keep Unsatiable Input");}
-    });
-  }
+  // submit_post(data) {
+  //   $.ajax("/api/v1/tasks", {
+  //     method: "post",
+  //     dataType: "json",
+  //     contentType: "application/json; charset=UTF-8",
+  //     data: JSON.stringify({ token: data.token, task: data}),
+  //     success: (resp) => {
+  //       swal("Created Task: " + resp.data.name + "successfully");
+  //       store.dispatch({type: 'ADD_TASK', task: resp.data});
+  //     },
+  //      error: () => {swal("Failed to post, Make sure you don't mask data, or keep Unsatiable Input");}
+  //   });
+  // }
 
   submit_login(data,history) {
-    $.ajax("/api/v1/token", {
-      method: "post",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(data),
-      success: (resp) => {
-        store.dispatch({
-          type: 'SET_TOKEN',
-          token: resp,
-        });
-        history.push("/feed");
-      },
-       error: () => {swal("Invalid email, pass");
-       history.push("/");}
-    });
+      let socket = new Socket("/socket", {params: {login: data}});
+      socket.connect().success((resp) => {
+          console.log("Socket Connection successful");
+          // TODO
+      })
+          .error(err => {
+              console.log("Socket Connection not successful");
+              // TODO
+          })
   }
 
 
