@@ -5,7 +5,7 @@ defmodule Bustracker.Favinfo.Fav do
 
   schema "favs" do
     belongs_to :user, Bustracker.Users.User
-    field :bus, :string
+    field :bus_id, :string
 
     timestamps()
   end

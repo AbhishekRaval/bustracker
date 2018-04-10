@@ -10,8 +10,8 @@ defmodule Bustracker.Users.User do
     field :phonenum, :string
     field :username, :string
 
-    has_many :favourite_list, Fav, foreign_key: user_id
-    has many :favourites, through: [:favourite_list, :bus]
+    has_many :favourite_list, Fav, foreign_key: :user_id
+    has_many :favourites, through: [:favourite_list, :bus]
 
     timestamps()
   end

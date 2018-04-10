@@ -5,7 +5,6 @@ defmodule Bustracker.Favinfo do
 
   import Ecto.Query, warn: false
   alias Bustracker.Repo
-
   alias Bustracker.Favinfo.Fav
 
   @doc """
@@ -21,6 +20,13 @@ defmodule Bustracker.Favinfo do
     Repo.all(Fav)
   end
 
+
+  def favs_map_for(user_id) do
+    Repo.all(from fav in Fav,
+      where: fav.user_id == ^user_id)
+      |> Enum.map(&({&1.bus_id, &1.id}))
+      |> Enum.into(%{})
+  end
   @doc """
   Gets a single fav.
 
