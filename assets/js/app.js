@@ -18,4 +18,22 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+ import socket from "./socket"
+
+ import game_demo from "./grid"; // FIXME: change the name of the function
+
+ function init() {
+   let root = document.getElementById('grid'); // FIXME: change the name 'grid' to our function
+   if (!root) {
+ 		return;
+ 	}
+
+  let channel = socket.channel("travellers:lobby",{} ) 
+
+
+
+  //game_demo(root, channel); // FIXME: pass all required channels
+ }
+
+ // Use jQuery to delay until page loaded.
+ $(init);
