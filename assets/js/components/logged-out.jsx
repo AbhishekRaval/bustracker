@@ -11,7 +11,7 @@ export default function LoggedOut(props)    {
         <Route path="/register" exact={true} render={({history}) => <div>
             <RegisterTask register={props.register} history={history} />
         </div>}/>
-        <Route path="/" exact={true} render={({history}) => <LoginForm login={props.login} history={history}  />} />
+        <Route path="/" exact={true} render={({history}) => <LoginForm login={props.login} history={history} dispatch={props.dispatch}/>} />
         </div>
     </Router>
 }

@@ -1,25 +1,38 @@
+import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {Nav} from './nav'
-class LoggedIn extends React.Component {
+import {Nav} from './nav';
 
-    constructor(props)  {
+export default class LoggedIn extends React.Component {
+
+    constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        // TODO
         // Fetch the socket from store and connect to channels
+        const {channel} = this.props.session;
+        channel.push("profile").receive("ok", resp => {
+            this.props.dispatch({
+                type: "SET_PROFILE",
+                profile: resp.profile
+            });
+        });
     }
 
-    render()    {
+    render() {
+
+        console.log(this.props);
         return <Router>
-            <Nav />
-            <Route path="/feed" exact={true} render={() => <div>
-                <Feed tasks={_.filter(props.tasks, (pp) => props.token.user_id == pp.user.id)}/>
-            </div>}/>
-            <Route path="/tasks/new" exact={true} render={({match, history}) => <PostForm users={props.users} history={history}/>}/>
-            <Route path="/tasks/edit/:task_id" exact={true} render={({match, history}) => <EditTask users={props.users} history={history}/>}/>
+            <div>
+                <Nav name={this.props.profile.username}/>
+                <Route path="/" exact={true} render={() => {
+                    return <div>This should be the profile page</div>;
+                }}/>
+                <Route path="/favourites" exact={true} render={() => <div>Favourites</div>}/>
+                <Route path="search" exact={true} render={() => <div>Search Page</div>}/>
+                <Route path="/buses/:id" exact={true}
+                       render={() => <div>Bus Tracking information would be displayed here</div>}/>
+            </div>
         </Router>;
     }
-
 }

@@ -11,22 +11,19 @@ import {
   Alert
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import IndexView from '../views/index';
 
-import Nav from './nav';
 import Feed from './feed';
 import Users from './users';
 import PostForm from './post-form';
-import LoginForm from './login-form';
 import EditTask from './edit-task';
 import RegisterTask from './register-user'
-import LoginView from '../views/index';
+import IndexView from '../views/index';
 
 import api from '../api';
 
 export default function tasks3_init(store) {
   ReactDOM.render(<Provider store={store}>
-    <LoginView />
+    <IndexView />
   </Provider>, document.getElementById('root'),);
 }
 

@@ -19,9 +19,8 @@ export default function LoginForm(props) {
 
 
     function create_token(ev) {
-        api.submit_login(props.login, props.history);
+        api.submit_login(props.login, null);
     }
-
 
     return <div className="d-flex align-items-center justify-content-center h-100 py-5">
         <div className="d-flex flex-column mx-auto">
@@ -30,13 +29,13 @@ export default function LoginForm(props) {
                 <Form>
                     <FormGroup>
                         Email:
-                        <Input type="text" name="email" placeholder="email"
-                               value={props.login.email} onChange={update}/>
+                        <Input type="text" name="emailid" placeholder="Email"
+                               value={props.login.emailid} onChange={update}/>
                     </FormGroup>
                     <FormGroup>
                         Password:
-                        <Input type="password" name="pass" placeholder="password"
-                               value={props.login.pass} onChange={update}/>
+                        <Input type="password" name="password" placeholder="Password"
+                               value={props.login.password} onChange={update}/>
                     </FormGroup>
                     <Button className="mr-2" color="primary" onClick={create_token}>Log In</Button>
                     <Link to="/register" className="btn btn-secondary" color="secondary">Register</Link>

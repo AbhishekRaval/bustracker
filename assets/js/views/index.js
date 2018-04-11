@@ -2,22 +2,29 @@ import React from 'react';
 import {connect} from 'react-redux';
 import LoggedOut from '../components/logged-out';
 import LoggedIn from '../components/logged-in';
+import api from '../api';
 
 class Index extends React.Component {
+
+    componentDidMount() {
+        api.reconnect();
+    }
     render()    {
 
-        console.log(this.props);
-        if (this.props.token)    {
-            return <LoggedIn history={this.props.history}/>
+        if (this.props.session)    {
+            return <LoggedIn
+            profile={this.props.profile}
+            history={this.props.history}
+            session={this.props.session}
+            />;
         }
         else    {
-            return <LoggedOut login={this.props.login} history={this.props.history}
+            return <LoggedOut login={this.props.login} dispatch={this.props.dispatch}
                    register={this.props.register} />
         }
     }
 }
 
-export default connect(({token, login, register}) =>
-{return Object.assign({}, {token: token}, {login: login}, {register: register});})(Index);
+export default connect(state => state)(Index);
 
 
