@@ -30,7 +30,7 @@ defmodule BustrackerWeb.TravellersChannel do
           %{username: profile.username ,
             phonenum: profile.phonenum ,
           emailid: profile.emailid}
-          
+
         {:reply, {:ok, %{:profile => profile}} , socket}
       {:error, :expired} ->
         :error

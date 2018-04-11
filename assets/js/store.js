@@ -71,7 +71,7 @@ function session(state = initialSession, action) {
     switch (action.type) {
         case 'SET_SESSION':
             return Object.assign({}, {token: action.token},
-                {channel: action.channel});
+                {channel: action.channel}, {socket: action.socket});
         case 'DELETE_SESSION':
             return null;
         default:

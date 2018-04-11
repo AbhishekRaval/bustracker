@@ -41,11 +41,11 @@ class ApiFunctions {
         console.log("fetch_information_without_token");
         let channel = socket.channel("travellers:lobby");
         channel.join();
-
         store.dispatch({
             type: "SET_SESSION",
             token: token,
-            channel: channel
+            channel: channel,
+            socket: socket
         });
     }
 
@@ -57,7 +57,8 @@ class ApiFunctions {
             store.dispatch({
                 type: "SET_SESSION",
                 token: payload.token,
-                channel: channel
+                channel: channel,
+                socket: socket
             });
         });
     }
