@@ -152,7 +152,8 @@ main {
     top: 0;
     bottom: 0;
     left: 0;
+    background-repeat: no-repeat;
     right: 0;
-    background: url("/images/background-01-01.jpg") center center;
+    background: url("/images/background-01-01-black.jpg") center bottom;
     opacity: .5;
 }

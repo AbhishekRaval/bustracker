@@ -28,7 +28,7 @@ function LoginForm(props) {
   }
 
   return <div className =
-         "d-flex align-items-center justify-content-center h-100 py-5 loginBackground">
+         "d-flex  h-100 py-5 loginBackground">
     <div className="d-flex flex-column mx-auto">
       <h3>Register to Bus Tracker App</h3>
       <div className="row justify-content-center">
