@@ -1,8 +1,10 @@
 defmodule BustrackerWeb.UserSocket do
   use Phoenix.Socket
+  alias Bustracker.Users
 
   ## Channels
   # channel "room:*", BustrackerWeb.RoomChannel
+  channel "travellers:*", BustrackerWeb.TravellersChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,10 +21,35 @@ defmodule BustrackerWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(%{"register" => user_params}, socket) do
+    case Users.create_user(user_params) do
+      {:ok, user} ->
+        token = Phoenix.Token.sign(socket,"token", user.id)
+        {:ok, assign(socket, :token, token)}
+      {:error, changeset} ->
+        :error
+    end
   end
 
+  def connect(%{"sign_in" => user_params}, socket) do
+    case Users.get_user_by_email(user_params["emailid"]) do
+      user ->
+        token = Phoenix.Token.sign(socket, "token", user.id)
+        {:ok, assign(socket, :token, token)}
+      nil ->
+        :error
+    end
+  end
+
+  def connect(%{"token" => token}, socket)
+    case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
+      {:ok, userid} ->
+        {:ok, assign(socket, :token, token)}
+      {:error, :expired} ->
+        :error
+    end
+
+  end
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
   #     def id(socket), do: "user_socket:#{socket.assigns.user_id}"
