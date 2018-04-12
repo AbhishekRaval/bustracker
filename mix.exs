@@ -20,7 +20,8 @@ defmodule Bustracker.Mixfile do
   def application do
     [
       mod: {Bustracker.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools],
+      application: [:logger, :httpoison]
     ]
   end
 
@@ -43,6 +44,8 @@ defmodule Bustracker.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
+      {:httpoison,"~> 0.9.0"},
+      {:poison, "~> 2.0"}
     ]
   end
 

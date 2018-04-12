@@ -21,7 +21,7 @@ defmodule BustrackerWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(%{"register" => user_params}, socket) do
+  def connect(%{"register" => user_params}, socket) do # TODO: Token necessary??
     case Users.create_user(user_params) do
       {:ok, user} ->
         token = Phoenix.Token.sign(socket,"token", user.id)
@@ -41,7 +41,7 @@ defmodule BustrackerWeb.UserSocket do
     end
   end
 
-  def connect(%{"token" => token}, socket)
+  def connect(%{"token" => token}, socket) do
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
         {:ok, assign(socket, :token, token)}
