@@ -24,6 +24,7 @@ defmodule BustrackerWeb.UserSocket do
   def connect(%{"register" => user_params}, socket) do
     IO.puts "connect called"
     IO.inspect user_params
+
     case Users.create_user(user_params) do
       {:ok, user} ->
         token = Phoenix.Token.sign(socket,"token", user.id)

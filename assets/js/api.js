@@ -30,6 +30,17 @@ class ApiFunctions {
         }
     }
 
+    fetch_bus_stops(channel, position)    {
+        var coordinates = {"latitude" : position.coords.latitude, "longitude" : position.coords.longitude};
+        channel.push("bus_stops", coordinates).receive("ok", payload => {
+            console.log(payload);
+            store.dispatch({
+                type: "SET_BUS_STOPS",
+                busStops: payload.bus_stops
+            });
+        });
+    }
+
     submit_login(data, history) {
         let socket = new Socket("/socket", {params: {login: data}});
         socket.connect();

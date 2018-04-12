@@ -125,20 +125,23 @@ function register(state = empty_reg, action) {
 
 
 var list_of_stops = {
-    buses: []
+    coords: null,
+    busStops: []
 }
 
-function list_stops(state = list_of_stops, action) {
+function listStops(state = list_of_stops, action) {
     switch (action.type) {
-        case 'SET_STOPS':
-            return Object.assign({}, state, {buses: action.buses});
+        case 'SET_BUS_STOPS':
+            return Object.assign({}, state, {busStops: action.busStops});
+        case 'SET_LOCATION':
+            return Object.assign({}, state, {coords: action.coords});
         default:
             return state;
     }
 }
 
 function root_reducer(state0, action) {
-    let reducer = combineReducers({users, form, edit_form, login, register, profile, session});
+    let reducer = combineReducers({users, form, edit_form, login, register, profile, session, listStops});
     let state1 = reducer(state0, action);
     return state1;
 };

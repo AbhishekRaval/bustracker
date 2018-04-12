@@ -17,6 +17,7 @@ class Index extends React.Component {
             history={this.props.history}
             session={this.props.session}
             dispatch={this.props.dispatch}
+            listStops={this.props.listStops}
             />;
         }
         else    {

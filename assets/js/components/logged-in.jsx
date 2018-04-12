@@ -1,6 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Nav from './nav';
+import {SearchBus} from "./searchbus";
 
 export default class LoggedIn extends React.Component {
 
@@ -29,7 +30,9 @@ export default class LoggedIn extends React.Component {
                     return <div>This should be the profile page</div>;
                 }}/>
                 <Route path="/favourites" exact={true} render={() => <div>Favourites</div>}/>
-                <Route path="search" exact={true} render={() => <div>Search Page</div>}/>
+                <Route path="/search" exact={true} render={() => <SearchBus channel={this.props.session.channel}
+                                                                            dispatch={this.props.dispatch}
+                                                                            listStops={this.props.listStops}/> } />
                 <Route path="/buses/:id" exact={true}
                        render={() => <div>Bus Tracking information would be displayed here</div>}/>
             </div>
