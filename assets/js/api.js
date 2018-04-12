@@ -12,6 +12,10 @@ class ApiFunctions {
             window.alert("Error in connection");
             socket.disconnect();
         });
+        socket.onOpen(() => {
+            this.fetch_information(socket);
+            history.push("/");
+        })
     }
 
     reconnect() {

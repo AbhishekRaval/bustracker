@@ -4,6 +4,7 @@ import {Button, FormGroup, Form, Label, Input} from 'reactstrap';
 import {Link, Route, Redirect} from 'react-router-dom';
 import swal from 'sweetalert';
 import api from '../api';
+import {withRouter} from "react-router-dom";
 
 function LoginForm(props) {
 
@@ -53,11 +54,11 @@ function LoginForm(props) {
     </div>;
 }
 
-function state2props(state) {
-    return {token: state.token};
-}
+// function state2props(state) {
+//     return {token: state.token};
+// }
 
 // Export the result of a curried function call.
-export default connect(state2props)(LoginForm);
+export default withRouter(LoginForm);
 
 //Source: http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/20-redux/notes.html
