@@ -14,7 +14,7 @@ import {Link, Route, Redirect} from 'react-router-dom';
 import swal from 'sweetalert'
 import api from '../api';
 
-function LoginForm(props) {
+export default function LoginForm(props) {
 
   function update(ev) {
     let tgt = $(ev.target);
@@ -23,14 +23,40 @@ function LoginForm(props) {
     props.dispatch({type: 'UPDATE_LOGIN_FORM', data: data});
   }
 
+  // function create_token(ev) {
+  //   api.submit_login(props.login, props.history);
+  // }
+
   function create_token(ev) {
-    api.submit_login(props.login, props.history);
+      //Login Validation
+      //Validating empty fields
+      var emptyRegex = new RegExp(/^\s+$/);
+      var emailRegex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+      var email = props.login.emailid;
+      var pass = props.login.password;
+      if((emptyRegex.test(email) || email == "") && (emptyRegex.test(pass) || pass == "")){
+        swal("None of the field should be empty");
+      }
+      else if(emptyRegex.test(email) || email == ""){
+        swal("Email field can't be empty");
+      }
+      else if(emptyRegex.test(pass) || pass == ""){
+        swal("Password field can't be empty");
+      }
+      else if(!emailRegex.test(email))
+      {
+        swal("That's an invalid email format.");
+      }
+      else{
+      api.submit_login(props.login, null);
+    }
   }
 
-  return <div
-         className="d-flex h-100 py-5 loginBackground">
+  return <div className="d-flex h-100 py-5 loginBackground">
     <div className="d-flex flex-column pt-4 mx-auto">
-      <h3><strong>Welcome to your Next Bus Tracking Application</strong></h3>
+      <h3>
+        <strong>Welcome to your Next Bus Tracking Application</strong>
+      </h3>
       <div className="row justify-content-center">
         <Form className="mt-4 pt-4">
           <FormGroup>
@@ -40,7 +66,7 @@ function LoginForm(props) {
                   email
                 </InputGroupText>
               </InputGroupAddon>
-              <Input type="text" name="email" placeholder="email" value={props.login.email} onChange={update}/>
+              <Input type="text" name="emailid" placeholder="email" value={props.login.emailid} onChange={update}/>
             </InputGroup>
           </FormGroup>
           <FormGroup>
@@ -50,7 +76,7 @@ function LoginForm(props) {
                   lock
                 </InputGroupText>
               </InputGroupAddon>
-              <Input type="password" name="pass" placeholder="password" value={props.login.pass} onChange={update}/>
+              <Input type="password" name="password" placeholder="password" value={props.login.password} onChange={update}/>
             </InputGroup>
           </FormGroup>
           <FormGroup className="text-center pt-3">
@@ -59,51 +85,8 @@ function LoginForm(props) {
           </FormGroup>
         </Form>
       </div>
-      {/* <div class="wrapper">
-        <ul class="StepProgress">
-          <li class="StepProgress-item is-done">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item is-done">
-        <strong>Award an entry</strong>
-        Current station
-          </li>
-          <li class="StepProgress-item is-done">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item is-done">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item is-done">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item current">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item current">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item">
-        <strong>Station1</strong>
-          </li>
-          <li class="StepProgress-item is-done">
-        <strong>Handover</strong>
-          </li>
-          <li class="StepProgress-item current">
-        <strong>Provide feedback</strong>
-          </li>
-        </ul>
-      </div> */}
     </div>
   </div>;
 }
-
-function state2props(state) {
-  //console.log("rerender", state);
-  return {token: state.token};
-}
-
-// Export the result of a curried function call.
-export default connect(state2props)(LoginForm);
 
 //Source: http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/20-redux/notes.html
