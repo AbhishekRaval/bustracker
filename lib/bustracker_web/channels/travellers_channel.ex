@@ -64,12 +64,10 @@ defmodule BustrackerWeb.TravellersChannel do
       {:ok, userid} ->
         profile = Users.get_user(userid)
                   |> Map.delete(:id)
-
         profile =
           %{username: profile.username ,
             phonenum: profile.phonenum ,
           emailid: profile.emailid}
-
         {:reply, {:ok, %{:profile => profile}} , socket}
       {:error, :expired} ->
         :error

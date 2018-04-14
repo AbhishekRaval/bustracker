@@ -12,7 +12,7 @@ export default function Feed(params) {
       <li><strong>Email:</strong> admin@tasks3.com</li>
     </ul>
     <Link to={"/tasks/new"} className="btn btn-primary my-3">
-      Add a New Task</Link>
+    Add a New Task</Link>
     {tasks}
   </div>;
 }

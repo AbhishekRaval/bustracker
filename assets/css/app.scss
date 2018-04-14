@@ -1,2 +1,186 @@
 /* This file is for your main application css. */
 @import "bootstrap";
+//Material Icon css from Google Icons
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+//Material Icon colors from Google
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-dark.md-inactive {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+.material-icons.md-light {
+  color: rgba(255, 255, 255, 1);
+}
+
+.material-icons.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.wrapper {
+  width: 330px;
+  font-family: 'Helvetica';
+  font-size: 14px;
+  border: 1px solid #CCC;
+}
+//Source for Li StepProgress//https://codepen.io/erwinquita/pen/ZWzVRE
+.StepProgress {
+  position: relative;
+  padding-left: 35px;
+  list-style: none;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15px;
+    width: 10px;
+    height: 100%;
+  }
+
+  &-item {
+    position: relative;
+
+    &:not(:last-child) {
+      padding-bottom: 1em;
+    }
+
+    &::before {
+      display: inline-block;
+      content: '';
+      position: absolute;
+      left: -30px;
+      height: 100%;
+      width: 10px;
+    }
+
+    &::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      top: 0px;
+      left: -40px;
+      width: 2em;
+      height: 2em;
+      border: 2px solid #CCC;
+      border-radius: 50%;
+      background-color: #FFF;
+    }
+
+    &.is-done {
+      &::before {
+        border-left: 10px solid #333;
+      }
+
+      &::after {
+        content: "✔";
+        font-size: 15px;
+        color: #FFF;
+        text-align: center;
+        border: 2px solid green;
+        background-color: green;
+      }
+    }
+
+    &.current {
+      &::before {
+        border-left: 10px solid #333;
+      }
+
+      &::after {
+        padding-top: 1px;
+        width: 2em;
+        height: 2em;
+        top: -4px;
+        left: -40px;
+        font-size: 15px;
+        text-align: center;
+        border: 2px solid #fb8c00;
+        background-color: #fb8c00;
+      }
+    }
+  }
+
+  strong {
+    display: block;
+  }
+}
+//Source for Li StepProgress//https://codepen.io/erwinquita/pen/ZWzVRE
+
+#root,
+body,
+html,
+main {
+  width: 100%;
+  height: 100%;
+}
+
+.container2{
+  width: 100%;
+  height: 100%;
+}
+
+.loginBackground {
+    position: relative;
+    z-index: 1;
+}
+
+.loginBackground:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    right: 0;
+    background: url("/images/background-01-01.jpg") center bottom;
+    opacity: .5;
+}
+
+
+//accordian css
+.react-sanfona {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 75%;
+}
+.react-sanfona-item-title {
+  background-color: #FFF2EE;
+  border-top: 1px solid #ccc;
+  color: #555;
+  padding: 20px;
+  text-transform: uppercase;
+}
+.react-sanfona-item:first-child .react-sanfona-item-title {
+  border-top: none;
+}
+
+//Source : https://moduscreate.com/blog/ext-js-react-layouts/
+.react-sanfona-item-expanded .react-sanfona-item-title {
+  background-color: #EB5957;
+  color: #fff;
+}
+
+.react-sanfona-item-body-wrapper {
+  color: #555;
+  padding: 20px;
+  position: relative;
+}
