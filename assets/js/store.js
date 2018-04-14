@@ -125,7 +125,6 @@ function register(state = empty_reg, action) {
 
 
 var list_of_stops = {
-    coords: null,
     busStops: []
 }
 

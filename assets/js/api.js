@@ -26,19 +26,28 @@ class ApiFunctions {
             socket.connect();
             socket.onOpen(() => {
                 this.fetch_information_without_token(socket, token);
-            })
+            });
+
+            socket.onError(() => {
+                socket.close();
+            });
         }
     }
 
     fetch_bus_stops(channel, position)    {
         var coordinates = {"latitude" : position.coords.latitude, "longitude" : position.coords.longitude};
         channel.push("bus_stops", coordinates).receive("ok", payload => {
-            console.log(payload);
+            console.log("Callback for fetching bus stops");
             store.dispatch({
                 type: "SET_BUS_STOPS",
                 busStops: payload.bus_stops
             });
         });
+    }
+
+    fetch_bus(busStopId, position)  {
+        // TODO
+        // Fetch list of buses for this bus stop
     }
 
     submit_login(data, history) {

@@ -1,7 +1,14 @@
+import React from 'react';
+import {Button} from 'reactstrap';
+import api from "../api";
 
-export function busstop(props)  {
+export default function busstop(props)  {
+    function fetchBus(busStopId)    {
+        api.fetch_bus(busStopId, props.channel);
+    }
+
     return <div>
-        Bus stop Name: {props.busstop.name}
+        <Button onClick={fetchBus(props.busstop.id)}>Bus stop Name: {props.busstop.name}</Button>
         Bus stop MBTA id: {props.busstop.id}
     </div>;
     }
