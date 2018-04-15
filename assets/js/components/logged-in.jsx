@@ -30,7 +30,8 @@ export default class LoggedIn extends React.Component {
                 <Route path="/favourites" exact={true} render={() => <div>Favourites</div>}/>
                 <Route path="/search" exact={true} render={() => <SearchBus channel={this.props.session.channel}
                                                                             dispatch={this.props.dispatch}
-                                                                            listStops={this.props.listStops}/> } />
+                                                                            listStops={this.props.listStops}
+                                                                            favs={this.props.profile.favs} /> } />
                 <Route path="/buses/:id" exact={true}
                        render={() => <div>Bus Tracking information would be displayed here</div>}/>
             </div>

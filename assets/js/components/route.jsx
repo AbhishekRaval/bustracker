@@ -2,28 +2,27 @@ import React from 'react';
 import Task from './task';
 import {Accordion, AccordionItem} from 'react-sanfona';
 import {Link, Route, Redirect} from 'react-router-dom';
+import Bus from './bus';
 
-import BusTrackingGraph from './bus-tracking';
-
-export default function route(params) {
+export function route(props) {
   return (<div className="d-flex  h-100 py-5">
-    <div className="d-flex flex-column align-self-center col-4">
-      <div className="row justify-content-center">
-        <h3>Start and End Stops of Bus Here</h3>
-      </div>
-    </div>
     <div className="d-flex flex-column col-8">
 
-      <h3 className="row justify-content-center">Select Bus</h3>
       <div className="row justify-content-center">
         <Accordion>
           {
-            this.props.listStops.busStops.map(item => {
-              return (<AccordionItem title={"dummy title"} expanded={item === 1} className="card" key={item}>
+            props.routes.map(route => {
+              return (<AccordionItem title={route.routeid} expanded={route === 1} className="card" key={<route className="routeid">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </route>}>
                 <div className="card-body">
-                  {`Buses at  BusStop ${item}`}
                   <div className="list-group">
-                    {//Loop the map of buses for given busstop
+                    {
+                      route.buses.map(bus => {
+                        return <Bus favourite={
+                            props.favs.some(fav => fav.route_id === bus.vehicle.relationships.route.data.id
+                            && fav.direction_id === bus.vehicle.attributes.direction_id)}
+                          channel={props.channel}
+                          bus={bus} />
+                      })
                     }
                     <button type="button" className="list-group-item list-group-item-secondary list-group-item-action ">Northeastern</button>
                     <button type="button" className="list-group-item list-group-item-primary list-group-item-action">Symphony</button>

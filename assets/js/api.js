@@ -29,7 +29,7 @@ class ApiFunctions {
             });
 
             socket.onError(() => {
-                socket.close();
+                socket.disconnect();
             });
         }
     }
@@ -53,8 +53,8 @@ class ApiFunctions {
         let socket = new Socket("/socket", {params: {login: data}});
         socket.connect();
         socket.onError((resp) => {
-            window.alert("Error in connection");
-            socket.close();
+            swal("Invalid Email or Password");
+            socket.disconnect();
         });
         socket.onOpen(() => {
             this.fetch_information(socket);
@@ -87,6 +87,15 @@ class ApiFunctions {
         });
     }
 
+    fetch_favourites(channel)    {
+        channel.push("fetchfavs").receive("ok", payload => {
+            store.dispatch({
+                type: "SET_FAVOURITES",
+                favs: payload.favs
+            })
+        })
+    }
+
     logout(socket, history) {
         store.dispatch({
             type: 'DELETE_SESSION',
@@ -94,6 +103,24 @@ class ApiFunctions {
         localStorage.removeItem("token");
         history.push("/");
         socket.disconnect();
+    }
+
+    addFavourite(channel, data)  {
+        channel.push("addfav", data).receive("ok", (resp) => {
+            store.dispatch({
+               type: "ADD_FAVOURITE",
+               fav: resp.fav
+            });
+        });
+    }
+
+    removeFavourite(channel, data)  {
+        channel.push("delfav", data).receive("ok", (resp) => {
+            store.dispatch({
+                type: "REMOVE_FAVOURITE",
+                data: data
+            });
+        });
     }
 }
 

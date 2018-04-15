@@ -1,23 +1,24 @@
 import React from 'react';
-import BusStop from './busstop';
 import api from '../api';
 import {Button} from 'reactstrap';
 import {Accordion, AccordionItem} from 'react-sanfona';
 import {Link, Route, Redirect} from 'react-router-dom';
-import Bus from './bus';
+import {route as BusRoute} from './route';
 
 export class SearchBus extends React.Component {
 
     componentDidMount() {
-        // Request for location information should be asked here.
-        var thisObj = this;
+
+        const thisObj = this;
 
         let success = function (pos) {
             api.fetch_bus_stops(thisObj.props.channel, pos);
+            api.fetch_favourites(thisObj.props.channel);
         };
 
         let failure = function (err) {
             console.log(err);
+
         };
 
         if (navigator.geolocation) {
@@ -37,6 +38,7 @@ export class SearchBus extends React.Component {
 
         let success = function (pos) {
             api.fetch_bus_stops(thisObj.props.channel, pos);
+            api.fetch_favourites(thisObj.props.channel);
         };
 
         let failure = function (err) {
@@ -54,42 +56,34 @@ export class SearchBus extends React.Component {
         if (this.props.listStops.busStops.length === 0) {
             return <div>Either the data is being fetched or you did not grant access to the location </div>;
         }
-        else return <div>
-
-            <div className="d-flex  h-100 py-5">
-                <div className="d-flex flex-column">
-
-                    <h3 className="row justify-content-center"><Button onClick={this.detectLocation}> Detect
-                        Location </Button></h3>
-                    <div className="row justify-content-center">
-                        <Accordion>
-                            {
-                                this.props.listStops.busStops.map(busStop => {
-                                    return (
-                                        <AccordionItem title={busStop.name} expanded={busStop === 1} className="card"
-                                                       key={busStop.id}>
-                                            <div className="card-body">
-                                                <div className="list-group">
-                                                    {busStop.buses.length !== 0 ?
-                                                        busStop.buses.map(bus => {
-                                                            return <Bus bus={bus}/>
-                                                        })
-                                                        : <div>No Buses Found</div>
-                                                    }
+        else {
+            console.log("Search bus properties are ");
+            console.log(this.props);
+            return <div>
+                <div className="d-flex  h-100 py-5">
+                    <div className="d-flex flex-column">
+                        <h3 className="row justify-content-center"><Button onClick={this.detectLocation}> Detect
+                            Location </Button></h3>
+                        <div className="row justify-content-center">
+                            <Accordion>
+                                {
+                                    this.props.listStops.busStops.map(busStop => {
+                                        return (
+                                            <AccordionItem title={busStop.stopname} expanded={busStop === 1}
+                                                           className="card"
+                                                           key={busStop.stopid}>
+                                                <div className="card-body">
+                                                    <BusRoute favs={this.props.favs} routes={busStop.catbuses}
+                                                              channel={this.props.channel}/>
                                                 </div>
-                                            </div>
-                                        </AccordionItem>);
-                                })
-                            }
-                        </Accordion>
-                        {/* <BusTrackingGraph /> get a bus tracking graph using this.*/}
+                                            </AccordionItem>);
+                                    })
+                                }
+                            </Accordion>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {/*{this.props.listStops.busStops.map( (busStop) =>*/}
-            {/*<BusStop key={busStop.id}*/}
-            {/*busstop={busStop}*/}
-            {/*channel={this.props.channel} />) }*/}
-        </div>;
+            </div>;
+        }
     }
 }
