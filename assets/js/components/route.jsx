@@ -5,7 +5,7 @@ import {Link, Route, Redirect} from 'react-router-dom';
 
 import BusTrackingGraph from './bus-tracking';
 
-export default function BusAccordian(params) {
+export default function route(params) {
   return (<div className="d-flex  h-100 py-5">
     <div className="d-flex flex-column align-self-center col-4">
       <div className="row justify-content-center">
