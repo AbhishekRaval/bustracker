@@ -44,17 +44,16 @@ defmodule Bustracker.Fetchjson do
 
   defp extractBuses(routeidlist) do
     IO.inspect(routeidlist)
-    Enum.map(routeidlist, fn (x) -> fetch_vehicleDetails(x["id"]) end)
+    Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"], "buses" => fetch_vehicleDetails(x["id"])} end)
     |> Enum.at(0)
   end
 
   defp extractRouteids(routes) do
      Enum.map(routes, fn (x) -> %{"id" => x["id"]} end)
-
   end
 
   defp extract(stops) do
-    Enum.map(stops, fn (x) -> %{"stopid" => x["id"], "stopname" => x["attributes"]["name"], "buses" => fetch_buses(x["id"])} end)
+    Enum.map(stops, fn (x) -> %{"stopid" => x["id"], "stopname" => x["attributes"]["name"], "catbuses" => fetch_buses(x["id"])} end)
   end
 
   def handle_response({:ok, %{status_code: 200, body: body}}) do
