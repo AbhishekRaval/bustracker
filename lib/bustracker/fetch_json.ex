@@ -44,12 +44,12 @@ defmodule Bustracker.Fetchjson do
 
   defp extractBuses(routeidlist) do
     IO.inspect(routeidlist)
-    Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"], "buses" => fetch_vehicleDetails(x["id"])} end)
+    Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"],"route_name" => x["rname"], "buses" => fetch_vehicleDetails(x["id"])} end)
     |> Enum.at(0)
   end
 
   defp extractRouteids(routes) do
-     Enum.map(routes, fn (x) -> %{"id" => x["id"]} end)
+     Enum.map(routes, fn (x) -> %{"id" => x["id"], "rname" => x["attributes"]["short_name"]} end)
   end
 
   defp extract(stops) do
