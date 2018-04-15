@@ -44,6 +44,9 @@ defmodule BustrackerWeb.TravellersChannel do
         {:error, %{reason: "Not logged in"}}
     end
   end
+  
+
+
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (travellers:lobby).

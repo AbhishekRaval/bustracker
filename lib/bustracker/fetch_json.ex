@@ -4,7 +4,8 @@ defmodule Bustracker.Fetchjson do
     |> HTTPoison.get
     |> handle_response
     |> extract
-    |> IO.inspect
+
+
   end
 
   # def url(id) do
@@ -12,28 +13,26 @@ defmodule Bustracker.Fetchjson do
   # end
 
   def url(latitude, longitude) do
-    "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.01"
+    "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.005"<>"&api_key=250808d6ad5140889bde5176bcb5392c"
   end
 
   def fetch_buses(stopid) do
-    "https://api-v3.mbta.com/routes?filter[stop]="<>Integer.to_string(stopid)
+   "https://api-v3.mbta.com/routes?api_key=250808d6ad5140889bde5176bcb5392c&filter[stop]="<>stopid
     |> HTTPoison.get
     |> handle_response
     |> extractRouteids
     |> extractBuses
-    |> IO.inspect
   end
 
   def fetch_vehicleDetails(routeid) do
-    "https://api-v3.mbta.com/vehicles?filter[route]="<>routeid
+    "https://api-v3.mbta.com/vehicles?filter[route]="<>routeid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
     |> HTTPoison.get
     |> handle_response
     |> extractHeadsign
-    |> IO.inspect
   end
 
   def fetch_headsign(tripid) do
-    tripmap = "https://api-v3.mbta.com/trips/"<>tripid
+    tripmap = "https://api-v3.mbta.com/trips/"<>tripid<>"?api_key=250808d6ad5140889bde5176bcb5392c"
               |> HTTPoison.get
               |> handle_response
     tripmap["attributes"]["headsign"]
@@ -44,19 +43,25 @@ defmodule Bustracker.Fetchjson do
   end
 
   defp extractBuses(routeidlist) do
+    IO.inspect(routeidlist)
     Enum.map(routeidlist, fn (x) -> fetch_vehicleDetails(x["id"]) end)
+    |> Enum.at(0)
   end
 
   defp extractRouteids(routes) do
-    Enum.map(routes, fn (x) -> %{"id" => x["id"]} end)
+     Enum.map(routes, fn (x) -> %{"id" => x["id"]} end)
+
   end
 
-  defp extract(maps) do
-    Enum.map(maps, fn (x) -> %{"id" => x["id"], "name" => x["attributes"]["name"]} end)
+  defp extract(stops) do
+    Enum.map(stops, fn (x) -> %{"id" => x["id"], "name" => x["attributes"]["name"], "buses" => fetch_buses(x["id"])} end)
   end
 
   def handle_response({:ok, %{status_code: 200, body: body}}) do
     temp = Poison.Parser.parse!(body)
     temp["data"]
+  end
+  def handle_response({_, %{status_code: _}}) do
+    "Check your network connection"
   end
 end
