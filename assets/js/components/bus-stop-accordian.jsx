@@ -18,8 +18,8 @@ export default function BusAccordian(params) {
       <div className="row justify-content-center">
         <Accordion>
           {
-            this.props.listStops.busStops.map(item => {
-              return (<AccordionItem title={"dummy title"} expanded={item === 1} className="card" key={item}>
+            [1, 2, 3, 4, 5].map(item => {
+              return (<AccordionItem title={`Bus Stop${item}`} expanded={item === 1} className="card" key={item}>
                 <div className="card-body">
                   {`Buses at  BusStop ${item}`}
                   <div className="list-group">

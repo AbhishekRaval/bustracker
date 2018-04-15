@@ -22,7 +22,7 @@ export default class LoggedIn extends React.Component {
     render() {
         console.log(this.props);
         return <Router>
-            <div>
+          <div className="container2">
                 <Nav name={this.props.profile.username} socket={this.props.session.socket} history={this.props.history} />
                 <Route path="/" exact={true} render={() => {
                     return <div>This should be the profile page</div>;
