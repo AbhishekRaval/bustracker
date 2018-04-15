@@ -36,8 +36,8 @@ defmodule Bustracker.Fetchjson do
     tripmap["attributes"]["headsign"]
   end
 
-  defp extractHeadsign(vidlist) do
-    Enum.map(vidlist, fn (x) -> %{"id" => x["id"], "hs" => fetch_headsign(x["relationships"]["trip"]["data"]["id"])} end)
+  defp extractHeadsign(vlist) do
+    Enum.map(vlist, fn (x) -> %{"vehicle" => x, "hs" => fetch_headsign(x["relationships"]["trip"]["data"]["id"])} end)
   end
 
   defp extractBuses(routeidlist) do
@@ -52,7 +52,7 @@ defmodule Bustracker.Fetchjson do
   end
 
   defp extract(stops) do
-    Enum.map(stops, fn (x) -> %{"id" => x["id"], "name" => x["attributes"]["name"], "buses" => fetch_buses(x["id"])} end)
+    Enum.map(stops, fn (x) -> %{"stopid" => x["id"], "stopname" => x["attributes"]["name"], "buses" => fetch_buses(x["id"])} end)
   end
 
   defp handle_response({:ok, %{status_code: 200, body: body}}) do
