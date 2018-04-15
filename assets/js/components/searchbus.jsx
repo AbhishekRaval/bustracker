@@ -4,6 +4,7 @@ import api from '../api';
 import {Button} from 'reactstrap';
 import {Accordion, AccordionItem} from 'react-sanfona';
 import {Link, Route, Redirect} from 'react-router-dom';
+import Bus from './bus';
 
 export class SearchBus extends React.Component {
 
@@ -20,12 +21,11 @@ export class SearchBus extends React.Component {
         };
 
         if (navigator.geolocation) {
-            console.log("Fetching position");
             if (this.props.listStops.busStops.length === 0)
                 navigator.geolocation.getCurrentPosition(function () {
                 }, function () {
                 }, {});
-            navigator.geolocation.watchPosition(success, failure, {maximumAge: 10000});
+            navigator.geolocation.getCurrentPosition(success, failure, {maximumAge: 10000});
         } else {
             window.alert("Geolocation is not supported");
         }
@@ -46,7 +46,7 @@ export class SearchBus extends React.Component {
         navigator.geolocation.getCurrentPosition(function () {
         }, function () {
         }, {});
-        anavigator.geolocation.watchPosition(success, failure, {maximumAge: 10000});
+        navigator.geolocation.getCurrentPosition(success, failure, {maximumAge: 10000});
     }
 
     render() {
@@ -69,24 +69,13 @@ export class SearchBus extends React.Component {
                                         <AccordionItem title={busStop.name} expanded={busStop === 1} className="card"
                                                        key={busStop.id}>
                                             <div className="card-body">
-                                                {`Buses at  BusStop ` + busStop.name}
                                                 <div className="list-group">
-                                                    {//Loop the map of buses for given busstop
+                                                    {busStop.buses.length !== 0 ?
+                                                        busStop.buses.map(bus => {
+                                                            return <Bus bus={bus}/>
+                                                        })
+                                                        : <div>No Buses Found</div>
                                                     }
-                                                    <button type="button"
-                                                            className="list-group-item list-group-item-secondary list-group-item-action ">Northeastern
-                                                    </button>
-                                                    <button type="button"
-                                                            className="list-group-item list-group-item-primary list-group-item-action">Symphony
-                                                    </button>
-                                                    <button type="button"
-                                                            className="list-group-item list-group-item-info list-group-item-action">Heath
-                                                        Street
-                                                    </button>
-                                                    <button type="button"
-                                                            className="list-group-item list-group-item-action"
-                                                            disabled>4
-                                                    </button>
                                                 </div>
                                             </div>
                                         </AccordionItem>);

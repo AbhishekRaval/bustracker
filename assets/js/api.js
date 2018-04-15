@@ -37,7 +37,6 @@ class ApiFunctions {
     fetch_bus_stops(channel, position)    {
         var coordinates = {"latitude" : position.coords.latitude, "longitude" : position.coords.longitude};
         channel.push("bus_stops", coordinates).receive("ok", payload => {
-            console.log("Callback for fetching bus stops");
             store.dispatch({
                 type: "SET_BUS_STOPS",
                 busStops: payload.bus_stops
@@ -55,6 +54,7 @@ class ApiFunctions {
         socket.connect();
         socket.onError((resp) => {
             window.alert("Error in connection");
+            socket.close();
         });
         socket.onOpen(() => {
             this.fetch_information(socket);
@@ -88,7 +88,6 @@ class ApiFunctions {
     }
 
     logout(socket, history) {
-
         store.dispatch({
             type: 'DELETE_SESSION',
         });

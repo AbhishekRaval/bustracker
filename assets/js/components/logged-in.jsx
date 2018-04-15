@@ -37,19 +37,3 @@ export default class LoggedIn extends React.Component {
         </Router>;
     }
 }
-//   render() {
-//     console.log(this.props);
-//     return <Router>
-//       <div>
-//         <Nav name={this.props.profile.username} socket={this.props.session.socket} history={this.props.history}/>
-//         <Route path="/" exact={true} render={() => {
-//           return <div><BusAccordian /></div>;
-//         }}/>
-//         <Route path="/favourites" exact={true} render={() => <div>Favourites</div>}/>
-//         <Route path="/search" exact={true} render={() => <div>Search Page</div>}/>
-//         <Route path="/buses/:id" exact={true} render={() => <div>Bus Tracking information would be displayed here</div>}/>
-//       </div>
-//     </Router>;
-//   }
-// }
-// >>>>>>> e2194a69cdc9a009011ab7a1393a1f268dcf3ce6

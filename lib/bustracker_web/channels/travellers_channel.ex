@@ -45,6 +45,9 @@ defmodule BustrackerWeb.TravellersChannel do
         {:error, %{reason: "Not logged in"}}
     end
   end
+  
+
+
 
   def handle_in("bus_stops", %{"latitude" => latitude, "longitude" => longitude}, socket) do
     IO.puts "Handle_in called"
