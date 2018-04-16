@@ -29,15 +29,17 @@ class ApiFunctions {
             });
 
             socket.onError(() => {
-                socket.close();
+                socket.disconnect();
             });
         }
     }
 
     fetch_bus_stops(channel, position)    {
+        console.log("fetch bus stops called");
         var coordinates = {"latitude" : position.coords.latitude, "longitude" : position.coords.longitude};
         channel.push("bus_stops", coordinates).receive("ok", payload => {
-            console.log("Callback for fetching bus stops");
+          console.log("Callback called");
+          console.log(payload);
             store.dispatch({
                 type: "SET_BUS_STOPS",
                 busStops: payload.bus_stops
@@ -54,7 +56,8 @@ class ApiFunctions {
         let socket = new Socket("/socket", {params: {login: data}});
         socket.connect();
         socket.onError((resp) => {
-            window.alert("Error in connection");
+            swal("Invalid Email or Password");
+            socket.disconnect();
         });
         socket.onOpen(() => {
             this.fetch_information(socket);
@@ -87,14 +90,40 @@ class ApiFunctions {
         });
     }
 
-    logout(socket, history) {
+    fetch_favourites(channel)    {
+        channel.push("fetchfavs").receive("ok", payload => {
+            store.dispatch({
+                type: "SET_FAVOURITES",
+                favs: payload.favs
+            })
+        })
+    }
 
+    logout(socket, history) {
         store.dispatch({
             type: 'DELETE_SESSION',
         });
         localStorage.removeItem("token");
         history.push("/");
         socket.disconnect();
+    }
+
+    addFavourite(channel, data)  {
+        channel.push("addfav", data).receive("ok", (resp) => {
+            store.dispatch({
+               type: "ADD_FAVOURITE",
+               fav: resp.fav
+            });
+        });
+    }
+
+    removeFavourite(channel, data)  {
+        channel.push("delfav", data).receive("ok", (resp) => {
+            store.dispatch({
+                type: "REMOVE_FAVOURITE",
+                data: data
+            });
+        });
     }
 }
 

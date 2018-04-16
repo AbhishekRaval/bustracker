@@ -4,6 +4,7 @@ defmodule BustrackerWeb.TravellersChannel do
   alias Bustracker.Requesthandler
   alias Bustracker.Favinfo
   alias Bustracker.Fetchjson
+  alias Bustracker.Favinfo.Fav
 
   def join("travellers:lobby", payload, socket) do
     if authorized?(payload) do
@@ -19,7 +20,8 @@ defmodule BustrackerWeb.TravellersChannel do
     {:reply, {:ok, %{:token => socket.assigns[:token]}}, socket}
   end
 
-  def handle_in("fetchfavs", %{"token" => token}, socket) do
+  def handle_in("fetchfavs", %{}, socket) do
+    token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
         {:reply, {:ok, %{"favs" => Requesthandler.fetchfavs(userid)}}, socket}
@@ -28,23 +30,30 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
-  def handle_in("addfav", %{"token" => token, "busid" => busid}, socket) do
+  def handle_in("addfav", %{"route_id" => routeid, "direction_id" => direction_id}, socket) do
+    token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-        {:reply, {:ok, %{"favs" => Favinfo.create_fav(%{"user_id" => userid, "busid" => busid})}}, socket}
+      { :ok, fav } = Favinfo.create_fav(%{"user_id" => userid, "route_id" => routeid, "direction_id" => direction_id})
+        {:reply, {:ok, %{ "fav" => %{"route_id" => fav.route_id, "fav_id" => fav.id, "direction_id" => fav.direction_id }}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end
   end
 
-  def handle_in("delfav", %{"token" => token, "favid" => favid}, socket) do
+  def handle_in("delfav", %{"route_id" => route_id , "direction_id" => direction_id}, socket) do
+    token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-        {:reply, {:ok, %{"favs" => Favinfo.delete_fav(favid)}}, socket}
+        {:ok, favs} = Favinfo.delete_fav(userid, route_id, direction_id)
+        {:reply, {:ok, %{}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end
   end
+  
+
+
 
   def handle_in("bus_stops", %{"latitude" => latitude, "longitude" => longitude}, socket) do
     IO.puts "Handle_in called"

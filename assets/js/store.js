@@ -80,14 +80,29 @@ function session(state = initialSession, action) {
 }
 
 
-let user_profile = {};
+let user_profile = {
+    username: "",
+    emailid: "",
+    phonenum: "",
+    favs: []
+};
 
-function profile(state = user_profile, action)  {
-    switch (action.type)    {
+function profile(state = user_profile, action) {
+    switch (action.type) {
         case 'SET_PROFILE':
-            return Object.assign({}, action.profile);
+            return Object.assign({}, state, action.profile);
         case 'REMOVE_PROFILE':
             return user_profile;
+        case 'SET_FAVOURITES':
+            return Object.assign({}, state, {favs: action.favs});
+        case 'ADD_FAVOURITE':
+            return Object.assign({}, state, {favs: [action.fav, ...state.favs]})
+        case 'REMOVE_FAVOURITE':
+            console.log(action.data);
+            let favs = state.favs.filter(fav =>
+                !(fav.route_id === action.data.route_id
+                    && fav.direction_id === action.data.direction_id))
+            return Object.assign({}, state, {favs: favs})
         default:
             return state;
     }
