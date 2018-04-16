@@ -2,8 +2,11 @@ defmodule BustrackerWeb.BusesChannel do
   use BustrackerWeb, :channel
 
   def join("buses:"<>id, payload, socket) do
+
     if authorized?(payload) do
+      # IO.puts("hey")
       if Bustracker.BusAgent.load(id) do
+        IO.puts("insideload")
         Bustracker.BusinfoGens.handle_join()
         {:ok, socket}
       else
@@ -16,7 +19,7 @@ defmodule BustrackerWeb.BusesChannel do
     end
   end
 
-  def terminate(_reason, _socket) do
+  def terminate(_reason, socket) do
     Bustracker.BusinfoGens.handle_leave()
   end
 
