@@ -2,15 +2,36 @@ defmodule BusinfoGens do
   use GenServer
 
   def start_link(id) do
-    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}, "count" => 0}, name: __MODULE__)
   end
 
   def get_bus(id) do
     # GenServer.call(__MODULE__, {:get_bus, id})
-    bus = "https://api-v3.mbta.com/vehicles/"<>id<>"?api_key=250808d6ad5140889bde5176bcb5392c"
+    "https://api-v3.mbta.com/vehicles/"<>id<>"?api_key=250808d6ad5140889bde5176bcb5392c"
     |> HTTPoison.get
     |> handle_response
-    %{"id" => id, "bus" => bus}
+  end
+
+  def handle_join() do
+    GenServer.call(__MODULE__, :increment_count)
+  end
+
+  def handle_call(:increment_count, _from , state) do
+    count = state["count"]
+    countc = count + 1
+    state = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
+    {:reply, :ok, state}
+  end
+
+  def handle_leave() do
+    GenServer.call(__MODULE__, :decrement_count)
+  end
+
+  def handle_call(:decrement_count, _from , state) do
+    count = state["count"]
+    countc = count - 1
+    state = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
+    {:reply, :ok, state}
   end
 
   def init(state) do
@@ -19,11 +40,13 @@ defmodule BusinfoGens do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 10000)
+    Process.send_after(self(), :work, 2000)
   end
 
   def handle_info(:work, state) do
-    state = get_bus(state["id"])
+    bus = get_bus(state["id"])
+    state = %{state | bus: bus}
+    BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", state["bus"])
     schedule_work()
     {:noreply, state}
   end

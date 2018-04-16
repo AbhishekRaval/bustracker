@@ -44,7 +44,7 @@ defmodule BustrackerWeb.TravellersChannel do
         {:error, %{reason: "Not logged in"}}
     end
   end
-  
+
 
 
 

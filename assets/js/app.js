@@ -28,9 +28,11 @@ import "phoenix_html"
  		return;
  	}
 
-  let channel = socket.channel("travellers:lobby",{} ) 
-
-
+  let channel = socket.channel("travellers:lobby",{} )
+  let channel1 = socket.channel("buses:y1772",{} )
+  channel1.on("update_bus", payload => {
+    console.log(payload);
+  })
 
   //game_demo(root, channel); // FIXME: pass all required channels
  }
