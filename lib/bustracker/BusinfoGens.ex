@@ -1,8 +1,8 @@
-defmodule BusinfoGens do
+defmodule Bustracker.BusinfoGens do
   use GenServer
 
   def start_link(id) do
-    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}, "count" => 0}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}, "count" => 1}, name: __MODULE__)
   end
 
   def get_bus(id) do
@@ -13,25 +13,29 @@ defmodule BusinfoGens do
   end
 
   def handle_join() do
-    GenServer.call(__MODULE__, :increment_count)
+    IO.puts("in handle join")
+    GenServer.cast(__MODULE__, {:increment_count, 1})
   end
 
-  def handle_call(:increment_count, _from , state) do
+  def handle_cast({:increment_count, 1}, state) do
     count = state["count"]
     countc = count + 1
-    state = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
-    {:reply, :ok, state}
+    IO.puts("count val:")
+    state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
+    {:noreply, state1}
   end
 
   def handle_leave() do
-    GenServer.call(__MODULE__, :decrement_count)
+    GenServer.cast(__MODULE__, {:decrement_count, 1})
   end
 
-  def handle_call(:decrement_count, _from , state) do
+  def handle_cast({:decrement_count, 1}, state) do
     count = state["count"]
     countc = count - 1
-    state = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
-    {:reply, :ok, state}
+    IO.puts("count val:")
+    IO.inspect(countc)
+    state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
+    {:noreply, state1}
   end
 
   def init(state) do
@@ -45,8 +49,8 @@ defmodule BusinfoGens do
 
   def handle_info(:work, state) do
     bus = get_bus(state["id"])
-    state = %{state | bus: bus}
-    BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", state["bus"])
+    state = %{"id" => state["id"], "bus" => bus, "count" => state["count"]}
+    BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", state)
     schedule_work()
     {:noreply, state}
   end

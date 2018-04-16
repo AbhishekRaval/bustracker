@@ -14,6 +14,7 @@ defmodule Bustracker.Application do
       supervisor(BustrackerWeb.Endpoint, []),
       # Start your own worker by calling: Bustracker.Worker.start_link(arg1, arg2, arg3)
       # worker(Bustracker.Worker, [arg1, arg2, arg3]),
+      worker(Bustracker.BusAgent,[])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

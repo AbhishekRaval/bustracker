@@ -2,7 +2,7 @@ defmodule Bustracker.BusAgent do
   use Agent
 
   def start_link() do
-    Agent.start_link(fn -> 0 end, name: __MODULE__)
+    Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
   def save(busid, pid) do
@@ -14,6 +14,12 @@ defmodule Bustracker.BusAgent do
   def load(busid) do
     Agent.get __MODULE__, fn state ->
       Map.get(state, busid)
+    end
+  end
+
+  def remove(busid) do
+    Agent.get __MODULE__, fn state ->
+      Map.delete(state, busid)
     end
   end
 
