@@ -1,40 +1,43 @@
 import React from 'react';
 import Task from './task';
 import {Accordion, AccordionItem} from 'react-sanfona';
+import {Button} from 'reactstrap';
 import {Link, Route, Redirect} from 'react-router-dom';
 import Bus from './bus';
 
 export function route(props) {
-  return (<div className="d-flex  h-100 py-5">
-    <div className="d-flex flex-column col-8">
-
+  function addfav(ev){
+    ev.preventDefault();    
+  }
+  return (  <div className="d-flex  h-100">
+    <div className="d-flex flex-column mx-auto py-2 w-100">
       <div className="row justify-content-center">
-        <Accordion>
+        <Accordion className="w-100" id="nestedCard">
           {
             props.routes.map(route => {
-              return (<AccordionItem title={route.routeid} expanded={route === 1} className="card" key={<route className="routeid">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </route>}>
-              <div className="card-body">
-                <div className="list-group">
-                  {
-                    route.buses.map(bus => {
-                      return <Bus favourite={
-                        props.favs.some(fav => fav.route_id === bus.vehicle.relationships.route.data.id
-                            && fav.direction_id === bus.vehicle.attributes.direction_id)}
+              return (<AccordionItem title={
+                <span class="react-sanfona-item-title">
+                  Route Number: {route.routeid}
+                  <Button className="material-icons colorstar md48 float-right" onClick={addfav} color="none">star_border</Button>
+                </span>
+              } expanded={route === 1} className="card" key={route.routeid}>
+                <div className="card-body">
+                  <div className="list-group">
+                    {
+                      route.buses.map(bus => {
+                        return <Bus favourite={
+                          props.favs.some(fav => fav.route_id === bus.vehicle.relationships.route.data.id
+                          && fav.direction_id === bus.vehicle.attributes.direction_id)}
                           channel={props.channel}
                           bus={bus} />
                       })
                     }
-                    <button type="button" className="list-group-item list-group-item-secondary list-group-item-action ">Northeastern</button>
-                    <button type="button" className="list-group-item list-group-item-primary list-group-item-action">Symphony</button>
-                    <button type="button" className="list-group-item list-group-item-info list-group-item-action">Heath Street</button>
-                    <button type="button" className="list-group-item list-group-item-action" disabled>4</button>
                   </div>
                 </div>
               </AccordionItem>);
             })
           }
-        </Accordion>
-        {/* <BusTrackingGraph /> get a bus tracking graph using this.*/}
+        </Accordion>                {/* <BusTrackingGraph /> get a bus tracking graph using this.*/}
       </div>
     </div>
   </div>);

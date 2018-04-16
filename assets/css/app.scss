@@ -161,7 +161,7 @@ main {
 .react-sanfona {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 3px;
-  width: 40%;
+  width: 60%;
   margin-left:  5px;
   margin-right: 5px;
 }
@@ -193,7 +193,16 @@ main {
 .accordiontitle{
   text-transform: none;
   font-size: 16px;
-
 }
+
+#nestedCard .react-sanfona-item-expanded{
+  background-color: #dd4b39 ;
+  color: #fff;
+}
+#nestedCard .react-sanfona-item-title {
+  background-color: #dd4b39 ;
+  color: #fff;
+}
+
 
 .material-icons.colorstar { color: #000066; }

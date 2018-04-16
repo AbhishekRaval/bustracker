@@ -1,3 +1,10 @@
 <div id="root">
-  <p>React app loading</p>
+  <div class="d-flex w-100 h-100">
+    <div class="d-flex align-items center flex-column mx-auto">
+      <div class="row justify-content-center h-50">
+        <img src="images/Gear-1s-200px.svg" height="140%" width="130%"  alt="Loading icon" />
+      </div>
+      <h3 class="pt-5 row justify-content-center">Loading Application</h3>
+    </div>
+  </div>
 </div>
