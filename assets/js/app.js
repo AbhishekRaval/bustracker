@@ -20,22 +20,20 @@ import "phoenix_html"
 
  import socket from "./socket"
 
- import game_demo from "./grid"; // FIXME: change the name of the function
+ // import game_demo from "./grid"; // FIXME: change the name of the function
 
- function init() {
-   let root = document.getElementById('grid'); // FIXME: change the name 'grid' to our function
-   if (!root) {
- 		return;
- 	}
 
-  let channel = socket.channel("travellers:lobby",{} )
-  let channel1 = socket.channel("buses:y1772",{} )
+  //let channel = socket.channel("travellers:lobby",{} )
+  let channel1 = socket.channel("buses:"+"y1772")
+  channel1.join()
+  
   channel1.on("update_bus", payload => {
-    console.log(payload);
+    console.log("bus",payload.bus);
+    console.log("count",payload.count);
+
   })
 
   //game_demo(root, channel); // FIXME: pass all required channels
- }
+
 
  // Use jQuery to delay until page loaded.
- $(init);
