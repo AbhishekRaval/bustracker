@@ -5,9 +5,11 @@ defmodule BustrackerWeb.BusesChannel do
 
     if authorized?(payload) do
       # IO.puts("hey")
-      if Bustracker.BusAgent.load(id) do
+      if Bustracker.BusAgent.has_process?(id) do
+        # Bustracker.BusAgent.load(id)
         IO.puts("insideload")
-        Bustracker.BusinfoGens.handle_join()
+        Bustracker.BusinfoGens.handle_join(id)
+        assign(socket, :busid, id)
         {:ok, socket}
       else
         {:ok, pid} = Bustracker.BusinfoGens.start_link(id)
@@ -20,7 +22,8 @@ defmodule BustrackerWeb.BusesChannel do
   end
 
   def terminate(_reason, socket) do
-    Bustracker.BusinfoGens.handle_leave()
+    id = socket.assigns[:busid]
+    Bustracker.BusinfoGens.handle_leave(id)
   end
 
   # Channels can be used in a request/response fashion

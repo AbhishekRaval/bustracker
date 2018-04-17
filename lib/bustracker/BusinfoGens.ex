@@ -2,7 +2,7 @@ defmodule Bustracker.BusinfoGens do
   use GenServer
 
   def start_link(id) do
-    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}, "count" => 1}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}, "count" => 0}, name: id)
   end
 
   def get_bus(id) do
@@ -12,9 +12,10 @@ defmodule Bustracker.BusinfoGens do
     |> handle_response
   end
 
-  def handle_join() do
+
+  def handle_join(id) do
     IO.puts("in handle join")
-    GenServer.cast(__MODULE__, {:increment_count, 1})
+    GenServer.cast(id, {:increment_count, 1})
   end
 
   def handle_cast({:increment_count, 1}, state) do
@@ -25,8 +26,8 @@ defmodule Bustracker.BusinfoGens do
     {:noreply, state1}
   end
 
-  def handle_leave() do
-    GenServer.cast(__MODULE__, {:decrement_count, 1})
+  def handle_leave(id) do
+    GenServer.cast(id, {:decrement_count, 1})
   end
 
   def handle_cast({:decrement_count, 1}, state) do
