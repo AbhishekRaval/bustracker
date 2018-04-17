@@ -1,8 +1,8 @@
 defmodule Bustracker.BusinfoGens do
   use GenServer
 
-  def start_link(id) do
-    GenServer.start_link(__MODULE__, %{"id" => id, "bus" => %{}, "count" => 0}, name: id)
+  def start_link(busid) do
+    GenServer.start_link(__MODULE__, %{"id" => busid, "bus" => %{}, "count" => 0}, name: via_tuple(busid))
   end
 
   def get_bus(id) do
@@ -12,10 +12,19 @@ defmodule Bustracker.BusinfoGens do
     |> handle_response
   end
 
+  def bus_pid(busid) do
+    busid
+    |> via_tuple()
+    |> GenServer.whereis()
+  end
 
-  def handle_join(id) do
+  def handle_join(pid) do
     IO.puts("in handle join")
-    GenServer.cast(id, {:increment_count, 1})
+    GenServer.cast(pid, {:increment_count, 1})
+  end
+
+  def via_tuple(busid) do
+    {:via, Registry, {Bustracker.BusRegistry, busid}}
   end
 
   def handle_cast({:increment_count, 1}, state) do
@@ -26,8 +35,9 @@ defmodule Bustracker.BusinfoGens do
     {:noreply, state1}
   end
 
-  def handle_leave(id) do
-    GenServer.cast(id, {:decrement_count, 1})
+  def handle_leave(pid) do
+    GenServer.cast(pid, {:decrement_count, 1})
+
   end
 
   def handle_cast({:decrement_count, 1}, state) do
@@ -36,7 +46,11 @@ defmodule Bustracker.BusinfoGens do
     IO.puts("count val:")
     IO.inspect(countc)
     state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
-    {:noreply, state1}
+    if countc == 0 do
+      {:stop, "NO USERS TRACKING THIS BUS", state1}
+    else
+      {:noreply, state1}
+    end
   end
 
   def init(state) do
