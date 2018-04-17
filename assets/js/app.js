@@ -24,5 +24,6 @@ import store from './store';
 import api from './api';
 import tasks3_init from './components/tasks3';
 $(function() {
+
   tasks3_init(store);
 });

@@ -115,7 +115,7 @@ function favourite(state = {favs: [], favs_live: []}, action)  {
             let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id))
             return Object.assign({}, state, {favs: favs})
         case 'SET_FAVOURITES_LIVE':
-            return Object.assign({}, state, {favs_live: action.favs_life});
+            return Object.assign({}, state, {favs_live: action.favs_live});
         default:
             return state;
     }

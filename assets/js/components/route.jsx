@@ -9,6 +9,7 @@ import api from '../api';
 export function route(props) {
 
     console.log(props);
+
     function addfav(route_id) {
         var data = {"route_id": route_id};
         api.addFavourite(props.channel, data);
@@ -25,7 +26,8 @@ export function route(props) {
                 <Accordion className="w-100" id="nestedCard">
                     {
                         props.routes.map(route => {
-                            return (<AccordionItem title={"Route Number:"  + route.routeid} expanded={route === 1} className="card" key={route.routeid}>
+                            return (<AccordionItem title={"Route Number:" + route.routeid} expanded={route === 1}
+                                                   className="card" key={route.routeid}>
                                 {props.favs.some(fav => fav.route_id === route.routeid)
                                     ? <Button className="material-icons colorstar md48 float-right"
                                               color="none"
@@ -40,9 +42,11 @@ export function route(props) {
                                 <div className="card-body">
                                     <div className="list-group">
                                         {
-                                            route.buses.map(bus => {
-                                                return <Bus channel={props.channel} bus={bus}/>
-                                            })
+                                            route.buses.length === 0 ?
+                                                <div>No Buses are currently running in this route</div> :
+                                                route.buses.map(bus => {
+                                                    return <Bus channel={props.channel} bus={bus}/>
+                                                })
                                         }
                                     </div>
                                 </div>

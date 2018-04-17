@@ -69,7 +69,7 @@ defmodule BustrackerWeb.TravellersChannel do
       {:ok, userid} ->
         favs = Requesthandler.fetchfavslive_info(userid)
         IO.inspect favs
-        {:reply, {:ok, %{"fav_live" => favs}}, socket}
+        {:reply, {:ok, %{"favs_live" => favs}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end

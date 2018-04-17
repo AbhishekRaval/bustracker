@@ -128,7 +128,10 @@ class ApiFunctions {
 
     fetch_favourites_live_info(channel) {
         channel.push("fav_live_info").receive("ok", (resp) => {
-            console.log("Live information: ", resp);
+            store.dispatch({
+                type: "SET_FAVOURITES_LIVE",
+                favs_live: resp.favs_live
+            })
         })
     }
 }
