@@ -5,6 +5,7 @@ defmodule BustrackerWeb.UserSocket do
   ## Channels
   # channel "room:*", BustrackerWeb.RoomChannel
   channel "travellers:*", BustrackerWeb.TravellersChannel
+  channel "buses:*", BustrackerWeb.BusesChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

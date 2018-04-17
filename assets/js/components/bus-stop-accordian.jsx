@@ -1,9 +1,6 @@
 import React from 'react';
-import Task from './task';
 import {Accordion, AccordionItem} from 'react-sanfona';
 import {Link, Route, Redirect} from 'react-router-dom';
-
-import BusTrackingGraph from './bus-tracking';
 
 export default function BusAccordian(params) {
   return (<div className="d-flex  h-100 py-5">

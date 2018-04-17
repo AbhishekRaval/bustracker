@@ -68,7 +68,7 @@ export function Session(props) {
                     <NavLink to="/search" exact={true} activeClassName="active" className="nav-link">Search Bus</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink to="favourites" href="#" className="nav-link">Favourites</NavLink>
+                    <NavLink to="/favourites" href="#" className="nav-link">Favourites</NavLink>
                 </NavItem>
             </ul>
             {session_info}
@@ -77,11 +77,3 @@ export function Session(props) {
 }
 
 export default withRouter(Nav);
-
-// function state2props(state) {
-//     return {
-//         token: state.token,
-//     };
-// }
-//
-// export default connect(state2props)(Nav);
