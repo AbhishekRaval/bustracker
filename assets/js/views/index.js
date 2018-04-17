@@ -10,14 +10,15 @@ class Index extends React.Component {
     componentDidMount() {
         api.reconnect();
     }
-    render()    {
 
+    render()    {
         if (this.props.session)    {
             return <LoggedIn
             profile={this.props.profile}
             session={this.props.session}
             dispatch={this.props.dispatch}
             listStops={this.props.listStops}
+            favourite={this.props.favourite}
             />;
         }
         else    {

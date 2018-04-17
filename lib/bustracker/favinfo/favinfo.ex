@@ -24,7 +24,6 @@ defmodule Bustracker.Favinfo do
   def favs_map_for(user_id) do
     Repo.all(from fav in Fav,
       where: fav.user_id == ^user_id)
-#      |> Enum.map(&({&1.route_id, &1.id}))
       |> Enum.map(fn(x) -> %{"route_id" => x.route_id, "fav_id" => x.id, "direction_id" => x.direction_id} end)
 
   end
@@ -97,8 +96,8 @@ defmodule Bustracker.Favinfo do
   end
 
 
-  def delete_fav(user_id, route_id, direction_id) do
-    fav = Repo.get_by(Fav, %{user_id: user_id, route_id: route_id, direction_id: direction_id})
+  def delete_fav(user_id, route_id) do
+    fav = Repo.get_by(Fav, %{user_id: user_id, route_id: route_id})
     delete_fav(fav)
   end
   @doc """

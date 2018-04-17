@@ -30,30 +30,27 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
-  def handle_in("addfav", %{"route_id" => routeid, "direction_id" => direction_id}, socket) do
+  def handle_in("addfav", %{"route_id" => routeid}, socket) do
     token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-      { :ok, fav } = Favinfo.create_fav(%{"user_id" => userid, "route_id" => routeid, "direction_id" => direction_id})
+      { :ok, fav } = Favinfo.create_fav(%{"user_id" => userid, "route_id" => routeid, "direction_id" => 0})
         {:reply, {:ok, %{ "fav" => %{"route_id" => fav.route_id, "fav_id" => fav.id, "direction_id" => fav.direction_id }}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end
   end
 
-  def handle_in("delfav", %{"route_id" => route_id , "direction_id" => direction_id}, socket) do
+  def handle_in("delfav", %{"route_id" => route_id }, socket) do
     token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-        {:ok, favs} = Favinfo.delete_fav(userid, route_id, direction_id)
+        {:ok, favs} = Favinfo.delete_fav(userid, route_id)
         {:reply, {:ok, %{}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end
   end
-  
-
-
 
   def handle_in("bus_stops", %{"latitude" => latitude, "longitude" => longitude}, socket) do
     IO.puts "Handle_in called"
@@ -65,6 +62,18 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
+
+  def handle_in("fav_live_info", _params, socket) do
+    token = socket.assigns[:token]
+    case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
+      {:ok, userid} ->
+        favs = Requesthandler.fetchfavslive_info(userid)
+        IO.inspect favs
+        {:reply, {:ok, %{"fav_live" => favs}}, socket}
+      {:error, :expired} ->
+        {:error, %{reason: "Not logged in"}}
+    end
+  end
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (travellers:lobby).
   def handle_in("profile", payload, socket) do
