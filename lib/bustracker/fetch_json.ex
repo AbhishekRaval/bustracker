@@ -61,6 +61,7 @@ defmodule Bustracker.Fetchjson do
   end
 
   defp extractBuses(routeidlist) do
+
     Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"],"route_name" => x["rname"],
                                       "buses" => fetch_vehicleDetails(x["id"])} end)
   end
