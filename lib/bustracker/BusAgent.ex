@@ -17,6 +17,12 @@ defmodule Bustracker.BusAgent do
     end
   end
 
+  def has_process?(busid) do
+    Agent.get __MODULE__, fn state ->
+      Map.has_key?(state, busid)
+    end
+  end
+
   def remove(busid) do
     Agent.get __MODULE__, fn state ->
       Map.delete(state, busid)

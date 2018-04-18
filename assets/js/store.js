@@ -167,8 +167,17 @@ function listStops(state = list_of_stops, action) {
     }
 }
 
+function bus_live(state = {}, action)   {
+    switch (action.type)    {
+        case 'UPDATE_BUS_INFORMATION':
+            return Object.assign({}, {bus: action.bus});
+        default:
+            return state;
+    }
+}
+
 function root_reducer(state0, action) {
-    let reducer = combineReducers({users, form, edit_form, login, register, profile, session, listStops, favourite});
+    let reducer = combineReducers({users, form, edit_form, login, register, profile, session, listStops, favourite, bus_live});
     let state1 = reducer(state0, action);
     return state1;
 };

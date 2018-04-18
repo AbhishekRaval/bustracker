@@ -4,7 +4,7 @@ import Nav from './nav';
 import {SearchBus} from "./searchbus";
 import {Accordion, AccordionItem} from 'react-sanfona';
 import FavouriteView from './favourites';
-import BusTrackingGraph from './bus-tracking';
+import BusTracking from './bus-tracking';
 
 export default class LoggedIn extends React.Component {
 
@@ -13,7 +13,6 @@ export default class LoggedIn extends React.Component {
   }
 
   componentDidMount() {
-    // Fetch the socket from store and connect to channels
     const {channel} = this.props.session;
     channel.push("profile").receive("ok", resp => {
       this.props.dispatch({type: "SET_PROFILE", profile: resp.profile});
@@ -26,7 +25,7 @@ export default class LoggedIn extends React.Component {
           <div className="container2">
             <Nav name={this.props.profile.username} socket={this.props.session.socket} history={this.props.history} />
             <Route path="/" exact={true} render={() => {
-              return <div className="h-75 w-100">This should be the profile page <BusTrackingGraph /></div>;
+              return <div className="h-75 w-100">This should be the profile page </div>;
                 }}/>
                 <Route path="/favourites" exact={true} render={() => <FavouriteView />}/>
                 <Route path="/search" exact={true} render={() => <SearchBus channel={this.props.session.channel}
@@ -34,7 +33,7 @@ export default class LoggedIn extends React.Component {
                                                                             listStops={this.props.listStops}
                                                                             favs={this.props.favourite.favs} /> } />
                 <Route path="/buses/:id" exact={true}
-                       render={() => <div>Bus Tracking information would be displayed here</div>}/>
+                       render={(props) => <BusTracking bus_id={props.match.params.id} />}/>
             </div>
         </Router>;
     }

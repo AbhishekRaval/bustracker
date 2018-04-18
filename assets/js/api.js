@@ -134,6 +134,15 @@ class ApiFunctions {
             })
         })
     }
+
+    fetch_live_information(channel) {
+        channel.on("update_bus", (payload) => {
+            store.dispatch({
+                type: "UPDATE_BUS_INFORMATION",
+                bus: payload.bus
+            });
+        })
+    }
 }
 
 export default new ApiFunctions();

@@ -22,6 +22,8 @@ defmodule BustrackerWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+
+
   def connect(%{"register" => user_params}, socket) do
     IO.puts "connect called"
     IO.inspect user_params
