@@ -82,4 +82,24 @@ defmodule Bustracker.Fetchjson do
   def handle_response({_, %{status_code: _}}) do
     "Check your network connection"
   end
+
+
+  ### Functions for broadcast
+  def fetchAllStops() do
+    stops = "https://api-v3.mbta.com/stops?filter[route_type]=3&api_key=250808d6ad5140889bde5176bcb5392c"
+              |> HTTPoison.get
+              |> handle_response
+    Enum.map(stops, fn(x) -> %{"stopname" => x["attributes"]["name"], "stopid" => x["id"]} end)
+  end
+
+  # def fetchToAndFrom(toid, fromid) do
+  #   routes = "https://api-v3.mbta.com/routes?filter[route_type]=3&api_key=250808d6ad5140889bde5176bcb5392c"
+  #             |> HTTPoison.get
+  #             |> handle_response
+  #   Enum.filter(routes, fn (x) -> routeHasBoth?(x, toid, fromid) end)
+  # end
+  #
+  # def routeHasBoth?(x, to, from) do
+  #
+  # end
 end

@@ -24,12 +24,13 @@ import "phoenix_html"
 
 
   //let channel = socket.channel("travellers:lobby",{} )
-  let channel1 = socket.channel("buses:"+"y1772")
+  let channel1 = socket.channel("buses:"+"36600250")
   channel1.join()
-  
+
   channel1.on("update_bus", payload => {
     console.log("bus",payload.bus);
     console.log("count",payload.count);
+    console.log("all_stops", payload.all_stops)
 
   })
 
