@@ -24,7 +24,7 @@ import "phoenix_html"
 
 
   //let channel = socket.channel("travellers:lobby",{} )
-  let channel1 = socket.channel("buses:"+"36600250")
+  let channel1 = socket.channel("buses:"+"36745737")
   channel1.join()
 
   channel1.on("update_bus", payload => {
