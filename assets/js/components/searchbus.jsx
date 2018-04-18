@@ -68,8 +68,8 @@ export class SearchBus extends React.Component {
             return <div>
               <div className="d-flex h-100">
                 <div className="d-flex flex-column mx-auto py-2 w-100">
-                  <h3 className="row justify-content-center"><Button onClick={this.detectLocation}>
-                      Detect Location
+                  <h3 className="row justify-content-center mx-3"><Button onClick={this.detectLocation}>
+                    Detect Location
                   </Button>
                   </h3>
 

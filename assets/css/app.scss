@@ -16,6 +16,7 @@
 .material-icons.md-48 {
   font-size: 48px;
 }
+
 //Material Icon colors from Google
 .material-icons.md-dark {
   color: rgba(0, 0, 0, 0.54);
@@ -171,6 +172,7 @@ main {
   background-color: #E9EBEE;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   padding: 15px;
+  font-size: 16px;
   text-align:center;
   text-decoration: none;
 }
@@ -180,29 +182,49 @@ main {
 
 //Source : https://moduscreate.com/blog/ext-js-react-layouts/
 .react-sanfona-item-expanded .react-sanfona-item-title {
-  background-color: #4267B2 ;
+  background-color: #223458 ;
+    font-size: 16px;
   color: #fff;
 }
 
 .react-sanfona-item-body-wrapper {
   color: #555;
   padding: 20px;
+    font-size: 16px;
   position: relative;
 }
 
-.accordiontitle{
-  text-transform: none;
-  font-size: 16px;
+
+.nestedCard .react-sanfona-item-title2{
+  background-color: #76839D  ;
+  text-decoration-color: black;
+    font-size: 14px !important;
 }
 
-#nestedCard .react-sanfona-item-expanded{
-  background-color: #dd4b39 ;
+.nestedCard .card-body{
+  font-size: 14px;
+  line-height: 1;
+}
+
+.nestedCard .react-sanfona-item-expanded .react-sanfona-item-title2 {
+  background-color: #4F6081 ;
   color: #fff;
-}
-#nestedCard .react-sanfona-item-title {
-  background-color: #dd4b39 ;
-  color: #fff;
+  font-size: 14px !important;
 }
 
 
-.material-icons.colorstar { color: #000066; }
+.material-icons.colorstar, .material-icons.colorstar:hover, .material-icons.colorstar:active {
+  color: #FFA51F;}
+
+.routeid, .routeid:hover, .routeid:focus, .routeid:active{
+  text-decoration: none;
+  background-color: transparent;
+  border:none;
+}
+.bg-blue{
+  background-color: #223458;
+}
+
+.bg-blue-button{
+  background-color: #4F6081 ;
+}

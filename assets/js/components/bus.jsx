@@ -12,14 +12,14 @@ function bus(props) {
     }
 
     return <div>
-        <Card>
-            <CardBody>
-                <CardTitle>Bus Heading Towards - {props.bus.hs}</CardTitle>
-                <CardText> Arriving at - X seconds </CardText>
-                <CardText> Direction: {props.bus.vehicle.attributes.direction_id === 1 ? "INBOUND" : "OUTBOUND"}</CardText>
-                <Button onClick={() => track(props.bus.vehicle.id)}>TRACK</Button>
-            </CardBody>
-        </Card>
+      <Card>
+        <CardBody>
+          <CardTitle>Bus Heading Towards - {props.bus.hs}</CardTitle>
+          <CardText> Arriving at - X seconds </CardText>
+          <CardText> Direction: {props.bus.vehicle.attributes.direction_id === 1 ? "INBOUND" : "OUTBOUND"}</CardText>
+          <Button onClick={() => track(props.bus.vehicle.id)} className="bg-blue-button">TRACK</Button>
+        </CardBody>
+      </Card>
     </div>;
 }
 
@@ -29,4 +29,3 @@ function mapProps(state, props) {
 }
 
 export default withRouter(connect(mapProps)(bus));
-

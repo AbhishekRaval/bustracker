@@ -56,8 +56,8 @@ export function Session(props) {
     let session_info = <Session name={props.name} socket={props.socket} history={props.history}/>;
 
     return (
-        <nav className="navbar navbar-dark bg-dark navbar-expand">
-      <span className="navbar-brand">
+        <nav className="navbar navbar-dark bg-blue navbar-expand">
+          <span className="navbar-brand h1-lg">
         BusTracker
       </span>
             <ul className="navbar-nav mr-auto">
