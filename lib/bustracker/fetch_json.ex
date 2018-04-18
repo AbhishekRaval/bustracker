@@ -19,7 +19,7 @@ defmodule Bustracker.Fetchjson do
     |> HTTPoison.get
     |> handle_response
     |> extractRouteids
-    |> extractBuses
+    |> extractBuses(stopid)
   end
 
   def fetch_vehicleDetails(routeid) do
@@ -45,6 +45,14 @@ defmodule Bustracker.Fetchjson do
     |> Enum.at(0)
   end
 
+  def fetch_predictions(routeid, stopid) do
+    preds = "https://api-v3.mbta.com/predictions?filter[stop]="<>stopid<>"&filter[route]="<>routeid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
+            |> HTTPoison.get
+            |> handle_response
+            |> Enum.at(0,%{"attributes" => %{"direction_id" => "2"}})
+    preds["attributes"]["direction_id"]
+  end
+
   defp extractReqd(plist) do
     avail = Enum.filter(plist, fn(x) -> x["relationships"]["vehicle"]["data"] end)
     Enum.map(avail, fn(x) -> %{"arrivalTime" => x["attributes"]["arrival_time"],
@@ -59,10 +67,10 @@ defmodule Bustracker.Fetchjson do
     Enum.filter(a, fn(x) -> x["preds"] !== nil end)
   end
 
-  defp extractBuses(routeidlist) do
-
+  defp extractBuses(routeidlist, stopid) do
     Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"],"route_name" => x["rname"],
-                                      "buses" => fetch_vehicleDetails(x["id"])} end)
+                                      "buses" => fetch_vehicleDetails(x["id"]),
+                                      "directionid" => fetch_direction(x["id"], stopid)} end)
   end
 
   defp extractRouteids(routes) do
