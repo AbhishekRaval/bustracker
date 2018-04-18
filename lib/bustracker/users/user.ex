@@ -1,4 +1,4 @@
-defmodule Bustracker.Users.User do
+  defmodule Bustracker.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,10 +6,10 @@ defmodule Bustracker.Users.User do
 
   schema "users" do
     field :emailid, :string
-    field :password, :string
+    field :password_hash, :string
     field :phonenum, :string
     field :username, :string
-    field :pass, :string, virtual: true
+    field :password, :string, virtual: true
 
     has_many :favourite_list, Fav, foreign_key: :user_id
     has_many :favourites, through: [:favourite_list, :bus]
@@ -20,9 +20,10 @@ defmodule Bustracker.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :emailid, :pass, :phonenum])
+    |> cast(attrs, [:username, :emailid, :password, :phonenum])
     |> put_pass_hash()
-    |> validate_required([:username, :emailid, :password, :phonenum])
+    |> unique_constraint(:emailid)
+    |> validate_required([:username, :emailid, :password_hash, :phonenum])
     |> validate_format(:emailid, ~r/@/)
   end
 

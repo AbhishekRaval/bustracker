@@ -1,6 +1,7 @@
 defmodule BustrackerWeb.UserSocket do
   use Phoenix.Socket
   alias Bustracker.Users
+  alias Bustracker.Users.User
 
   ## Channels
   # channel "room:*", BustrackerWeb.RoomChannel
@@ -39,13 +40,14 @@ defmodule BustrackerWeb.UserSocket do
 
   def connect(%{"login" => user_params}, socket) do
     IO.inspect user_params
-    user = Users.get_user_by_email(user_params["emailid"])
-
-    case user do
-      nil -> :error
-      _ ->
-        token = Phoenix.Token.sign(socket, "token", user.id)
-        {:ok, assign(socket, :token, token)}
+#    user = Users.get_user_by_email(user_params["emailid"])
+    with {:ok, %User{} = user} <- Users.get_and_auth_user(user_params["emailid"], user_params["password"]) do
+      case user do
+        nil -> :error
+        _ ->
+          token = Phoenix.Token.sign(socket, "token", user.id)
+          {:ok, assign(socket, :token, token)}
+      end
     end
   end
 
@@ -70,4 +72,3 @@ defmodule BustrackerWeb.UserSocket do
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil
 end
-
