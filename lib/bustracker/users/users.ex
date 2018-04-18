@@ -107,4 +107,10 @@ defmodule Bustracker.Users do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  def get_and_auth_user(name, pass) do
+    user = Repo.one(from u in User, where: u.name == ^name)
+    Comeonin.Argon2.check_pass(user, pass)
+  end
+  
 end

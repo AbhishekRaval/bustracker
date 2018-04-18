@@ -4,22 +4,43 @@ defmodule BustrackerWeb.BusesChannel do
   def join("buses:"<>id, payload, socket) do
 
     if authorized?(payload) do
-      if Bustracker.BusAgent.load(id) do
-        IO.puts("insideload")
-        Bustracker.BusinfoGens.handle_join()
-        {:ok, socket}
-      else
-        {:ok, pid} = Bustracker.BusinfoGens.start_link(id)
-        Bustracker.BusAgent.save(id, pid)
-        {:ok, socket}
+      pid = Bustracker.BusinfoGens.bus_pid(id)
+      case is_pid(pid) do
+        false -> {:ok, pid } = Bustracker.BusSupervisor.start_bustracking(id)
+               Bustracker.BusinfoGens.handle_join(pid)
+               socket = assign(socket, "busid", id)
+               {:ok, socket}
+        true -> Bustracker.BusinfoGens.handle_join(pid)
+                socket = assign(socket, "busid", id)
+                {:ok, socket}
       end
+
+
+      # if Bustracker.BusAgent.has_process?(id) do
+      #   pid = Bustracker.BusAgent.load(id)
+      #   IO.inspect(id)
+      #   IO.puts("insideload")
+      #   Bustracker.BusinfoGens.handle_join(pid)
+      #   socket = assign(socket, "busid", id)
+      #
+      #   {:ok, socket}
+      # else
+      #   # {:ok, pid} = Bustracker.BusinfoGens.start_link(id)
+      #   # Bustracker.BusAgent.save(id, pid)
+      #
+      #   Bustracker.BusinfoGens.handle_join(pid)
+      #   socket = assign(socket, "busid", id)
+      #   {:ok, socket}
+      # end
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
   def terminate(_reason, socket) do
-    Bustracker.BusinfoGens.handle_leave()
+    busid = socket.assigns["busid"]
+    pid = Bustracker.BusinfoGens.bus_pid(busid)
+    Bustracker.BusinfoGens.handle_leave(pid)
   end
 
   # Channels can be used in a request/response fashion
