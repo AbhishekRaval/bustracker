@@ -38,22 +38,31 @@ defmodule Bustracker.Fetchjson do
     tripmap["attributes"]["headsign"]
   end
 
-  def fetch_predictions(tripid) do
-    "https://api-v3.mbta.com/predictions?filter[trip]="<>tripid<>"&sort=stop_sequence&api_key=250808d6ad5140889bde5176bcb5392c"
+  def fetch_predictions(tripid, stopid) do
+    "https://api-v3.mbta.com/predictions?filter[stop]="<>stopid<>"&filter[trip]="<>tripid<>"&include=vehicle&api_key=250808d6ad5140889bde5176bcb5392c"
     |> HTTPoison.get
     |> handle_response
+    |> extractReqd
+    |> Enum.at(0)
+  end
+
+  defp extractReqd(plist) do
+    avail = Enum.filter(plist, fn(x) -> x["relationships"]["vehicle"]["data"] end)
+    Enum.map(avail, fn(x) -> %{"arrivalTime" => x["attributes"]["arrival_time"],
+                               "directionId" => x["attributes"]["direction_id"],
+                               "stopSequence" => x["attributes"]["stop_sequence"]} end)
   end
 
   defp extractHeadsign(vlist) do
-    Enum.map(vlist, fn (x) -> %{"vehicle" => x, "hs" => fetch_headsign(x["relationships"]["trip"]["data"]["id"]),
-                                "preds" => fetch_predictions(x["relationships"]["trip"]["data"]["id"])} end)
+    a = Enum.map(vlist, fn (x) -> %{"vehicleid" => x["id"], "hs" => fetch_headsign(x["relationships"]["trip"]["data"]["id"]),
+                                "preds" => fetch_predictions(x["relationships"]["trip"]["data"]["id"], x["relationships"]["stop"]["data"]["id"]),
+                                "tripid" => x["relationships"]["trip"]["data"]["id"]} end)
+    Enum.filter(a, fn(x) -> x["preds"] !== nil end)
   end
 
   defp extractBuses(routeidlist) do
-    IO.inspect(routeidlist)
     Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"],"route_name" => x["rname"],
-                                      "buses" => fetch_vehicleDetails(x["id"])
-                                      } end)
+                                      "buses" => fetch_vehicleDetails(x["id"])} end)
   end
 
   defp extractRouteids(routes) do
