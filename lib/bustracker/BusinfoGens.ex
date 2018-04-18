@@ -61,7 +61,7 @@ defmodule Bustracker.BusinfoGens do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 2000)
+    Process.send_after(self(), :work, 2000*10)
   end
 
   def handle_info(:work, state) do
@@ -111,7 +111,7 @@ defmodule Bustracker.BusinfoGens do
     vehicle = "https://api-v3.mbta.com/vehicles?filter[trip]="<>tripid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
         |> HTTPoison.get
         |> handle_response
-    Enum.map(vehicle, fn (x) -> x["attributes"] end)
+    Enum.at(Enum.map(vehicle, fn (x) -> x["attributes"] end), 0)
   end
 
 
