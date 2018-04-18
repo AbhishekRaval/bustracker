@@ -6,9 +6,9 @@ import {connect} from 'react-redux';
 
 function bus(props) {
 
-    function track(vehicle_id) {
-        console.log(vehicle_id);
-        props.history.push("/buses/" + vehicle_id);
+    function track(tripID) {
+        props.history.push("/buses/" + tripID);
+
     }
 
     function date(time) {
@@ -29,7 +29,7 @@ function bus(props) {
           <CardText> Arriving at - {
             date(props.bus.preds.arrivalTime) > 0 ?  "In " + date(props.bus.preds.arrivalTime) + " minutes" : "Arriving Now" } </CardText>
           <CardText> Direction: {props.bus.preds.directionId === 1 ? "INBOUND" : "OUTBOUND"}</CardText>
-          <Button  className="bg-blue-button" onClick={() => track(props.bus.id)}>TRACK</Button>
+          <Button  className="bg-blue-button" onClick={() => track(props.bus.tripid)}>TRACK</Button>
         </CardBody>
       </Card>
     </div>;

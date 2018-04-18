@@ -139,7 +139,8 @@ class ApiFunctions {
         channel.on("update_bus", (payload) => {
             store.dispatch({
                 type: "UPDATE_BUS_INFORMATION",
-                bus: payload.bus
+                bus: payload.bus,
+                bus_stops: payload.all_stops
             });
         })
     }

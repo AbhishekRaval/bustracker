@@ -1,8 +1,10 @@
 defmodule Bustracker.BusinfoGens do
   use GenServer
 
-  def start_link(busid) do
-    GenServer.start_link(__MODULE__, %{"id" => busid, "bus" => %{}, "count" => 0}, name: via_tuple(busid))
+  def start_link(tripid) do
+    all_stops = fetch_all_busstops(tripid)
+    IO.inspect(all_stops)
+    GenServer.start_link(__MODULE__, %{"id" => tripid, "bus" => %{},"all_stops" => all_stops, "count" => 0}, name: via_tuple(tripid))
   end
 
   def get_bus(id) do
@@ -31,7 +33,7 @@ defmodule Bustracker.BusinfoGens do
     count = state["count"]
     countc = count + 1
     IO.puts("count val:")
-    state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
+    state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc, "all_stops" => state["all_stops"]}
     {:noreply, state1}
   end
 
@@ -45,7 +47,7 @@ defmodule Bustracker.BusinfoGens do
     countc = count - 1
     IO.puts("count val:")
     IO.inspect(countc)
-    state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc}
+    state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc, "all_stops" => state["all_stops"]}
     if countc == 0 do
       {:stop, "NO USERS TRACKING THIS BUS", state1}
     else
@@ -63,8 +65,11 @@ defmodule Bustracker.BusinfoGens do
   end
 
   def handle_info(:work, state) do
-    bus = get_bus(state["id"])
-    state = %{"id" => state["id"], "bus" => bus, "count" => state["count"]}
+    ##bus = get_bus(state["id"])
+    IO.inspect(state["id"])
+    bus = fetch_current_bus_status(state["id"])
+    IO.inspect(bus)
+    state = %{"id" => state["id"], "bus" => bus, "count" => state["count"], "all_stops" => state["all_stops"]}
     BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", state)
     schedule_work()
     {:noreply, state}
@@ -80,6 +85,33 @@ defmodule Bustracker.BusinfoGens do
   def handle_response({:ok, %{status_code: 200, body: body}}) do
     temp = Poison.Parser.parse!(body)
     temp["data"]
+  end
+
+
+  ### Data manipulation Functions
+  def fetch_all_busstops(tripid) do
+    schedules = "https://api-v3.mbta.com/schedules?filter[trip]="<>tripid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
+            |> HTTPoison.get
+            |> handle_response
+    Enum.map(schedules, fn (x) -> %{"stopid" => x["relationships"]["stop"]["data"]["id"],
+                                    "stopname" => fetch_stopname(x["relationships"]["stop"]["data"]["id"]),
+                                    "stopseq" => x["attributes"]["stop_sequence"]}end)
+  end
+
+  def fetch_stopname(stopid) do
+    x = "https://api-v3.mbta.com/stops/"<>stopid<>"?api_key=250808d6ad5140889bde5176bcb5392c"
+         |> HTTPoison.get
+         |> handle_response
+
+    x["attributes"]["name"]
+
+  end
+
+  def fetch_current_bus_status(tripid) do
+    vehicle = "https://api-v3.mbta.com/vehicles?filter[trip]="<>tripid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
+        |> HTTPoison.get
+        |> handle_response
+    Enum.map(vehicle, fn (x) -> x["attributes"] end)
   end
 
 

@@ -24,6 +24,23 @@ import store from './store';
 import api from './api';
 import tasks3_init from './components/tasks3';
 $(function() {
-
   tasks3_init(store);
 });
+// =======
+//
+//   //let channel = socket.channel("travellers:lobby",{} )
+//   let channel1 = socket.channel("buses:"+"36600250")
+//   channel1.join()
+//
+//   channel1.on("update_bus", payload => {
+//     console.log("bus",payload.bus);
+//     console.log("count",payload.count);
+//     console.log("all_stops", payload.all_stops)
+//
+//   })
+//
+//   //game_demo(root, channel); // FIXME: pass all required channels
+//
+//
+//  // Use jQuery to delay until page loaded.
+// >>>>>>> origin/To_And_from_feature
