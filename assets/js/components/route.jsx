@@ -10,18 +10,19 @@ export function route(props) {
 
     console.log(props);
 
-    function addfav(route_id,e) {
+    function addfav(route_id,stop_id, e) {
       e.stopPropagation();
-        var data = {"route_id": route_id};
+        var data = {"route_id": route_id, "stop_id" : stop_id};
         api.addFavourite(props.channel, data);
     }
 
-    function delfav(route_id,e) {
+    function delfav(route_id,stop_id, e) {
         e.stopPropagation();
-        var data = {"route_id": route_id};
+        var data = {"route_id": route_id, "stop_id" : stop_id};
         api.removeFavourite(props.channel, data);
     }
 
+    let stop_id = props.stopid;
     return (<div className="d-flex  h-100">
       <div className="d-flex flex-column  py-2 w-100">
         <div className="row justify-content-center">
@@ -33,11 +34,11 @@ export function route(props) {
                   {props.favs.some(fav => fav.route_id === route.routeid)
                     ? <Button className="material-icons colorstar routeid md-36 float-right"
                       color="link"
-                      onClick={(e) => delfav(route.routeid,e)}>
+                      onClick={(e) => delfav(route.routeid, stop_id ,e)}>
                       star
                     </Button> :
                     <Button className="material-icons colorstar md-36 routeid float-right"
-                      onClick={(e) => addfav(route.routeid,e)}
+                      onClick={(e) => addfav(route.routeid, stop_id, e)}
                     color="link">
                       star_border
                     </Button>} </span>} expanded={route === 1}

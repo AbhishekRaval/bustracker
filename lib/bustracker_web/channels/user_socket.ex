@@ -40,7 +40,6 @@ defmodule BustrackerWeb.UserSocket do
 
   def connect(%{"login" => user_params}, socket) do
     IO.inspect user_params
-#    user = Users.get_user_by_email(user_params["emailid"])
     with {:ok, %User{} = user} <- Users.get_and_auth_user(user_params["emailid"], user_params["password"]) do
       case user do
         nil -> :error
@@ -60,15 +59,5 @@ defmodule BustrackerWeb.UserSocket do
     end
   end
 
-  # Socket id's are topics that allow you to identify all sockets for a given user:
-  #
-  #     def id(socket), do: "user_socket:#{socket.assigns.user_id}"
-  #
-  # Would allow you to broadcast a "disconnect" event and terminate
-  # all active sockets and channels for a given user:
-  #
-  #     BustrackerWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
-  #
-  # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil
 end

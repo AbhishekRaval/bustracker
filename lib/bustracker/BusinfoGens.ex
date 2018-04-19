@@ -1,5 +1,8 @@
 defmodule Bustracker.BusinfoGens do
   use GenServer
+  alias Bustracker.Repo
+  alias Bustracker.Stops
+  alias Bustracker.Stops.Stop
 
   def start_link(tripid) do
     all_stops = fetch_all_busstops(tripid)
@@ -13,8 +16,8 @@ defmodule Bustracker.BusinfoGens do
     |> handle_response
   end
 
-  def bus_pid(busid) do
-    busid
+  def bus_pid(tripid) do
+    tripid
     |> via_tuple()
     |> GenServer.whereis()
   end
@@ -24,8 +27,8 @@ defmodule Bustracker.BusinfoGens do
     GenServer.cast(pid, {:increment_count, 1})
   end
 
-  def via_tuple(busid) do
-    {:via, Registry, {Bustracker.BusRegistry, busid}}
+  def via_tuple(tripid) do
+    {:via, Registry, {Bustracker.BusRegistry, tripid}}
   end
 
   def handle_cast({:increment_count, 1}, state) do
@@ -48,6 +51,7 @@ defmodule Bustracker.BusinfoGens do
     IO.inspect(countc)
     state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc, "all_stops" => state["all_stops"]}
     if countc == 0 do
+      Bustracker.BusSupervisor.stop_bustracking(state["id"])
       {:stop, "NO USERS TRACKING THIS BUS", state1}
     else
       {:noreply, state1}
@@ -60,7 +64,7 @@ defmodule Bustracker.BusinfoGens do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 2000 * 10)
+    Process.send_after(self(), :work, 1000 * 10)
   end
 
   def handle_info(:work, state) do
@@ -95,7 +99,9 @@ defmodule Bustracker.BusinfoGens do
             |> handle_response
     Enum.map(schedules, fn (x) -> %{"stopid" => x["relationships"]["stop"]["data"]["id"],
                                     "stopname" => fetch_stopname(x["relationships"]["stop"]["data"]["id"]),
-                                    "stopseq" => x["attributes"]["stop_sequence"]}end)
+                                    "stopseq" => x["attributes"]["stop_sequence"],
+                                    "latitude" => Stops.get_stop_latitude_by_stopid(x["relationships"]["stop"]["data"]["id"]),
+                                    "longitude" => Stops.get_stop_longitude_by_stopid(x["relationships"]["stop"]["data"]["id"])}end)
   end
 
   def fetch_stopname(stopid) do

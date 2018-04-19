@@ -18,17 +18,6 @@ timespent: ""
 *
 * */
 
-function users(state = [], action) {
-    switch (action.type) {
-        case 'USERS_LIST':
-            return [...action.users];
-        case 'ADD_USER':
-            return [action.user, ...state];
-        default:
-            return state;
-    }
-}
-
 let empty_form = {
     user_id: "",
     name: "",
@@ -93,26 +82,21 @@ function profile(state = user_profile, action) {
             return Object.assign({}, state, action.profile);
         case 'REMOVE_PROFILE':
             return user_profile;
-        // case 'SET_FAVOURITES':
-        //     return Object.assign({}, state, {favs: action.favs});
-        // case 'ADD_FAVOURITE':
-        //     return Object.assign({}, state, {favs: [action.fav, ...state.favs]})
-        // case 'REMOVE_FAVOURITE':
-        //     let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id))
-        //     return Object.assign({}, state, {favs: favs})
         default:
             return state;
     }
 }
 
-function favourite(state = {favs: [], favs_live: []}, action)  {
-    switch (action.type)    {
+function favourite(state = {favs: [], favs_live: []}, action) {
+    switch (action.type) {
         case 'ADD_FAVOURITE':
             return Object.assign({}, state, {favs: [action.fav, ...state.favs]});
         case 'SET_FAVOURITES':
             return Object.assign({}, state, {favs: action.favs});
         case 'REMOVE_FAVOURITE':
-            let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id))
+            console.log(action.data)
+            let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id && fav.stop_id == action.data.stop_id))
+            console.log(favs);
             return Object.assign({}, state, {favs: favs})
         case 'SET_FAVOURITES_LIVE':
             return Object.assign({}, state, {favs_live: action.favs_live});
@@ -169,8 +153,8 @@ function listStops(state = list_of_stops, action) {
     }
 }
 
-function bus_live(state = {}, action)   {
-    switch (action.type)    {
+function bus_live(state = {}, action) {
+    switch (action.type) {
         case 'UPDATE_BUS_INFORMATION':
             return Object.assign({}, {bus: action.bus}, {bus_stops: action.bus_stops}, {channel: action.channel});
         case 'CLEAR_BUS_LIVE':
@@ -181,7 +165,7 @@ function bus_live(state = {}, action)   {
 }
 
 function root_reducer(state0, action) {
-    let reducer = combineReducers({users, form, edit_form, login, register, profile, session, listStops, favourite, bus_live});
+    let reducer = combineReducers({form, edit_form, login, register, profile, session, listStops, favourite, bus_live});
     let state1 = reducer(state0, action);
     return state1;
 };

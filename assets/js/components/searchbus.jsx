@@ -75,7 +75,7 @@ export class SearchBus extends React.Component {
                               key={busStop.stopid}>
                               <div className="card-body">
                                 <BusRoute favs={this.props.favs} routes={busStop.catbuses}
-                                  channel={this.props.channel}/>
+                                  stopid={busStop.stopid} channel={this.props.channel}/>
                               </div>
                             </AccordionItem>);
                         })
