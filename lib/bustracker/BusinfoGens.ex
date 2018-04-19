@@ -61,7 +61,7 @@ defmodule Bustracker.BusinfoGens do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 2000 * 10)
+    Process.send_after(self(), :work, 1000 * 10)
   end
 
   def handle_info(:work, state) do
