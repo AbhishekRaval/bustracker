@@ -18,17 +18,6 @@ timespent: ""
 *
 * */
 
-function users(state = [], action) {
-    switch (action.type) {
-        case 'USERS_LIST':
-            return [...action.users];
-        case 'ADD_USER':
-            return [action.user, ...state];
-        default:
-            return state;
-    }
-}
-
 let empty_form = {
     user_id: "",
     name: "",
@@ -93,13 +82,6 @@ function profile(state = user_profile, action) {
             return Object.assign({}, state, action.profile);
         case 'REMOVE_PROFILE':
             return user_profile;
-        // case 'SET_FAVOURITES':
-        //     return Object.assign({}, state, {favs: action.favs});
-        // case 'ADD_FAVOURITE':
-        //     return Object.assign({}, state, {favs: [action.fav, ...state.favs]})
-        // case 'REMOVE_FAVOURITE':
-        //     let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id))
-        //     return Object.assign({}, state, {favs: favs})
         default:
             return state;
     }
@@ -181,7 +163,7 @@ function bus_live(state = {}, action)   {
 }
 
 function root_reducer(state0, action) {
-    let reducer = combineReducers({users, form, edit_form, login, register, profile, session, listStops, favourite, bus_live});
+    let reducer = combineReducers({form, edit_form, login, register, profile, session, listStops, favourite, bus_live});
     let state1 = reducer(state0, action);
     return state1;
 };

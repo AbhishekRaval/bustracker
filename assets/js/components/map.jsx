@@ -38,7 +38,7 @@ function MapContainer(props) {
                  zoom={12}
                  style={style}
                  onReady={props.fetchPlaces}
-                    >
+                    f>
                 <Marker
                     title={'Bus is Here'}
                     name={'Your position'}
