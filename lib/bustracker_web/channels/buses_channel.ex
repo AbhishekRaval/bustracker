@@ -37,6 +37,13 @@ defmodule BustrackerWeb.BusesChannel do
     end
   end
 
+  def handle_in("fetchbusdata", payload, socket) do
+    all_stops = Bustracker.BusinfoGens.fetch_all_busstops(socket.assigns["busid"])
+    bus = Bustracker.BusinfoGens.fetch_current_bus_status(socket.assigns["busid"])
+    state = %{"id" => socket.assigns["busid"], "bus" => bus, "all_stops" => all_stops}
+    {:reply, {:ok, state}, socket}
+  end
+
   def terminate(_reason, socket) do
     IO.puts "Terminate called"
     busid = socket.assigns["busid"]

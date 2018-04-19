@@ -3,11 +3,7 @@ defmodule Bustracker.BusinfoGens do
 
   def start_link(tripid) do
     all_stops = fetch_all_busstops(tripid)
-    bus = fetch_current_bus_status(tripid)
-    state = %{"id" => tripid, "bus" => bus, "count" => 0, "all_stops" => all_stops}
-    BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", state)
-    IO.inspect(state)
-    GenServer.start_link(__MODULE__, %{"id" => tripid, "bus" => bus,"all_stops" => all_stops, "count" => 0}, name: via_tuple(tripid))
+    GenServer.start_link(__MODULE__, %{"id" => tripid, "bus" => %{},"all_stops" => all_stops, "count" => 0}, name: via_tuple(tripid))
   end
 
   def get_bus(id) do
@@ -73,7 +69,8 @@ defmodule Bustracker.BusinfoGens do
     bus = fetch_current_bus_status(state["id"])
     IO.inspect(bus)
     state = %{"id" => state["id"], "bus" => bus, "count" => state["count"], "all_stops" => state["all_stops"]}
-    BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", state)
+    packet = %{"id" => state["id"], "bus" => bus, "all_stops" => state["all_stops"]}
+    BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", packet)
     schedule_work()
     {:noreply, state}
   end
