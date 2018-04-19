@@ -52,13 +52,11 @@ export default function LoginForm(props) {
     }
   }
 
-  return <div className="d-flex h-100 py-5 loginBackground">
-    <div className="d-flex flex-column pt-4 mx-auto">
-      <h3>
-        <strong>Welcome to your Next Bus Tracking Application</strong>
-      </h3>
+  return <div className="d-flex h-100 py-5">
+    <div className="d-flex flex-column mx-auto">
+      <h3 className="text-center font-weight-bold h3 pt-3">  Welcome to your Next Bus Tracking Application </h3>
       <div className="row justify-content-center">
-        <Form className="mt-4 pt-4">
+        <Form className="mt-4">
           <FormGroup>
             <InputGroup>
               <InputGroupAddon addonType="prepend">

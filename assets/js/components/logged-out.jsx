@@ -7,7 +7,7 @@ import LoginForm from './login-form';
 
 export default function LoggedOut(props)    {
     return <Router>
-      <div className="container2">
+      <div className="loginBackground container2">
         <Route path="/register" exact={true} render={({history}) => <div className="container2">
           <RegisterTask dispatch={props.dispatch} register={props.register} history={history} />
         </div>}/>
