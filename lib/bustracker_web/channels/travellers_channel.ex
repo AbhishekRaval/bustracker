@@ -45,7 +45,7 @@ defmodule BustrackerWeb.TravellersChannel do
     token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-        {:ok, favs} = Favinfo.delete_fav(userid, route_id, stop_id)
+        {:ok, favs} = Favinfo.delete_fav(userid, route_id, String.to_integer(stop_id))
         {:reply, {:ok, %{}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}

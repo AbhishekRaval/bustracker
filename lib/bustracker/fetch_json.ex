@@ -11,7 +11,7 @@ defmodule Bustracker.Fetchjson do
   # end
 
   def url(latitude, longitude) do
-    "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.005"<>"&api_key=250808d6ad5140889bde5176bcb5392c"
+    "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.003"<>"&api_key=250808d6ad5140889bde5176bcb5392c"
   end
 
   def fetch_buses(stopid) do
