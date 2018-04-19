@@ -1,6 +1,7 @@
 defmodule BustrackerWeb.UserSocket do
   use Phoenix.Socket
   alias Bustracker.Users
+  alias Bustracker.Users.User
 
   ## Channels
   # channel "room:*", BustrackerWeb.RoomChannel
@@ -22,45 +23,43 @@ defmodule BustrackerWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  # def connect(%{"register" => user_params}, socket) do # TODO: Token necessary??
-  #   case Users.create_user(user_params) do
-  #     {:ok, user} ->
-  #       token = Phoenix.Token.sign(socket,"token", user.id)
-  #       {:ok, assign(socket, :token, token)}
-  #     {:error, changeset} ->
-  #       :error
-  #   end
-  # end
-  #
-  # def connect(%{"sign_in" => user_params}, socket) do
-  #   case Users.get_user_by_email(user_params["emailid"]) do
-  #     user ->
-  #       token = Phoenix.Token.sign(socket, "token", user.id)
-  #       {:ok, assign(socket, :token, token)}
-  #     nil ->
-  #       :error
-  #   end
-  # end
+
+
+  def connect(%{"register" => user_params}, socket) do
+    IO.puts "connect called"
+    IO.inspect user_params
+
+    case Users.create_user(user_params) do
+      {:ok, user} ->
+        token = Phoenix.Token.sign(socket,"token", user.id)
+        {:ok, assign(socket, :token, token)}
+      {:error, changeset} ->
+        :error
+    end
+  end
+
+  def connect(%{"login" => user_params}, socket) do
+    IO.inspect user_params
+#    user = Users.get_user_by_email(user_params["emailid"])
+    with {:ok, %User{} = user} <- Users.get_and_auth_user(user_params["emailid"], user_params["password"]) do
+      case user do
+        nil -> :error
+        _ ->
+          token = Phoenix.Token.sign(socket, "token", user.id)
+          {:ok, assign(socket, :token, token)}
+      end
+    end
+  end
 
   def connect(%{"token" => token}, socket) do
-    # case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
-      # {:ok, userid} ->
-      IO.puts "Connect called"
-        {:ok, socket}
-      # {:error, :expired} ->
-        # :error
-
-
+    case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
+      {:ok, userid} ->
+        {:ok, assign(socket, :token, token)}
+      {:error, :expired} ->
+        :error
+    end
   end
-  # def connect(%{"token" => token}, socket) do
-  #   case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
-  #     {:ok, userid} ->
-  #       {:ok, assign(socket, :token, token)}
-  #     {:error, :expired} ->
-  #       :error
-  #   end
-  #
-  # end
+
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
   #     def id(socket), do: "user_socket:#{socket.assigns.user_id}"

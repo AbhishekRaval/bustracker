@@ -5,7 +5,8 @@ defmodule Bustracker.Favinfo.Fav do
 
   schema "favs" do
     belongs_to :user, Bustracker.Users.User
-    field :bus_id, :string
+    field :route_id, :string
+    field :direction_id, :integer
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule Bustracker.Favinfo.Fav do
   @doc false
   def changeset(fav, attrs) do
     fav
-    |> cast(attrs, [:user_id, :bus_id])
-    |> validate_required([:user_id])
+    |> cast(attrs, [:user_id, :route_id, :direction_id])
+    |> validate_required([:user_id, :route_id, :direction_id])
   end
 end

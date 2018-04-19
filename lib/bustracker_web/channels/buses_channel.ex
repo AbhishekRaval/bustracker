@@ -4,7 +4,6 @@ defmodule BustrackerWeb.BusesChannel do
   def join("buses:"<>id, payload, socket) do
 
     if authorized?(payload) do
-      # IO.puts("hey")
       pid = Bustracker.BusinfoGens.bus_pid(id)
       case is_pid(pid) do
         false -> {:ok, pid } = Bustracker.BusSupervisor.start_bustracking(id)
@@ -14,7 +13,6 @@ defmodule BustrackerWeb.BusesChannel do
         true -> Bustracker.BusinfoGens.handle_join(pid)
                 socket = assign(socket, "busid", id)
                 {:ok, socket}
-
       end
 
 
@@ -39,7 +37,15 @@ defmodule BustrackerWeb.BusesChannel do
     end
   end
 
+  def handle_in("fetchbusdata", payload, socket) do
+    all_stops = Bustracker.BusinfoGens.fetch_all_busstops(socket.assigns["busid"])
+    bus = Bustracker.BusinfoGens.fetch_current_bus_status(socket.assigns["busid"])
+    state = %{"id" => socket.assigns["busid"], "bus" => bus, "all_stops" => all_stops}
+    {:reply, {:ok, state}, socket}
+  end
+
   def terminate(_reason, socket) do
+    IO.puts "Terminate called"
     busid = socket.assigns["busid"]
     pid = Bustracker.BusinfoGens.bus_pid(busid)
     Bustracker.BusinfoGens.handle_leave(pid)
