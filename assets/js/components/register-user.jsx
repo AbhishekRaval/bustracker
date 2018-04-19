@@ -117,7 +117,7 @@ function LoginForm(props) {
                   phone
                 </InputGroupText>
               </InputGroupAddon>
-              <Input type="number" name="phonenum" placeholder="phone" value={props.register.phonenum} onChange={update}/>
+              <Input type="tel" name="phonenum" placeholder="phone" value={props.register.phonenum} onChange={update}/>
             </InputGroup>
           </FormGroup>
 
