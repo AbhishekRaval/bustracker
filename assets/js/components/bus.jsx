@@ -29,7 +29,7 @@ function bus(props) {
           <CardText> Arriving at - {
             date(props.bus.preds.arrivalTime) > 0 ?  "In " + date(props.bus.preds.arrivalTime) + " minutes" : "Arriving Now" } </CardText>
           <CardText> Direction: {props.directionid === 1 ? "INBOUND" : "OUTBOUND"}</CardText>
-          <Button  className="bg-blue-button" onClick={() => track(props.bus.tripid)}>TRACK</Button>
+          <Button  className="bg-blue-button align-items-center" onClick={() => track(props.bus.tripid)}>TRACK</Button>
         </CardBody>
       </Card>
     </div>;

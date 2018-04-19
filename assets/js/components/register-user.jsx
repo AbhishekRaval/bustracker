@@ -72,7 +72,7 @@ function LoginForm(props) {
 
   return <div className="d-flex  h-100 py-5 loginBackground">
     <div className="d-flex flex-column mx-auto">
-      <h3>Register to Bus Tracker App</h3>
+      <h3 className="text-center font-weight-bold h3 pt-3">Register to Bus Tracker App</h3>
       <div className="row justify-content-center">
 
         <Form className="mt-4">

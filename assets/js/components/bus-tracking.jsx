@@ -30,25 +30,19 @@ class BusTracking extends React.Component {
         var bus_stops = this.props.bus_stops
         var bus_coords = {lat: bus.latitude, lng: bus.longitude}
 
-        return (<div className="wrappernew h-100">
-                <div className=" h-100 row">
-                    <div className="col d-flex flex-column justify-content-center">
-                        <div className="col d-flex mx-3">
-                            <div className="row align-items-center w-50">
-                                <Card body="body" inverse style={{
-                                    backgroundColor: '#333',
-                                    borderColor: '#333',
-                                    maxwidth: '50%',
-                                    maxheight: '50%'
-                                }}>
+        return ( <div className=" h-100 row">
+                    <div className="col d-flex flex-column justify-content-md-center">
+                        <div className="col col-md-4 d-flex ml-md-5 ">
+                            <div className="row align-items-center  h-100">
+                                <Card  className="text-white bg-blue">
                                     <CardBody>
-                                        <CardText>
+                                        <CardText className="text-white">
                                             Heading Towards: {bus_stops[bus_stops.length - 1].stopname}
                                         </CardText>
-                                        <CardText>
+                                        <CardText className="text-white">
                                             Current Status: {bus.current_status}
                                         </CardText>
-                                        <CardText>
+                                        <CardText className="text-white">
                                             Bus Stop: {bus_stops.find((bus_stop) => {
                                             return bus.current_stop_sequence === bus_stop.stopseq
                                         }).stopname}
@@ -57,31 +51,30 @@ class BusTracking extends React.Component {
                                 </Card>
                             </div>
                         </div>
-                        <div className="col px-2 justify-content-start h-100 ">
-                            <div className="row align-items-center w-100">
+                        <div className="col mt-md-1 justify-content-start h-100">
+                            <div className="row align-items-start w-100">
                                 <Map bus_coords={bus_coords} apiKey={"AIzaSyCOtyRHvosWiK3eFuaKO5ETx3nmk0ty8dQ"}/>
                             </div>
                         </div>
                     </div>
-                    <div className="d-flex align-items-center h-100 col">
-                        <div className="row h-75">
-                            <ul className="StepProgress ">
+                <div className="ml-mt-3 col wrappernew d-flex align-items-center ">
+                        <div className="row h-100">
+                            <ul className="StepProgress ml-md-5">
                                 {bus_stops.map((bus_stop) => {
                                     if (bus_stop.stopseq < bus.current_stop_sequence) {
                                         return <li className="StepProgress-item is-done">
-                                            <strong>{bus_stop.stopname}</strong>
+                                           {bus_stop.stopname}
                                         </li>;
                                     }
                                     else
                                         return <li className="StepProgress-item current">
-                                            <strong>{bus_stop.stopname}</strong>
+                                            {bus_stop.stopname}
                                         </li>;
                                 })}
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
         );
     }
 

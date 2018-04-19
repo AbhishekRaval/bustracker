@@ -2,10 +2,8 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import React from 'react';
 
 const style = {
-    width: '80%',
-    height: '100%',
-    paddingLeft: '10%',
-    paddingRight: '10%'
+    width: '100%',
+    height: '100%'
 }
 
 function MapContainer(props) {
@@ -47,17 +45,17 @@ function MapContainer(props) {
                 //     lat: props.bus_coords.lat,
                 //     lng: props.bus_coords.lng
                 // }}
-                 zoom={14}
+                 zoom={13}
                  style={style}
-                className={'align-items-center text-center'}>
+                className={'ml-md-5 mt-md-1'}>
                 <Marker
                     title={'Bus is Here'}
                     name={'Your position'}
                     position={{lat: props.bus_coords.lat, lng: props.bus_coords.lng}}
                     icon={{
                         url: "/images/bus.png",
-                        anchor: new google.maps.Point(12, 12),
-                        scaledSize: new google.maps.Size(22, 32)
+                        anchor: new google.maps.Point(70,70),
+                        scaledSize: new google.maps.Size(42,42)
                     }}/>
                 {/*<Marker*/}
                     {/*title={'The marker`s title will appear as a tooltip.'}*/}

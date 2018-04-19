@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink, Link} from 'react-router-dom';
-import {Form, FormGroup, NavItem, Input, Button} from 'reactstrap';
+import {Form, FormGroup, NavItem, Input, Button,NavbarBrand} from 'reactstrap';
 import {connect} from 'react-redux';
 import api from '../api';
 import {withRouter} from "react-router-dom";
@@ -44,21 +44,23 @@ export function Session(props) {
         api.logout(props.socket, props.history);
     }
 
-    return <div className="navbar-text">
-        Logged in as: {props.name} |
-        <Link to="/" className="ml-2 text-white btn btn-link" onClick={logout}>Logout</Link>
-    </div>;
+    return  <span  className="nav-link">
+             Logged in as: {props.name + " logout"}
+        <NavItem className="text-white">
+        <NavLink to="/"  className="nav-link" onClick={logout}>Logout</NavLink>
+           </NavItem>
+    </span>;
 }
 
- function Nav(props) {
+function Nav(props) {
 
     let session_info = <Session name={props.name} socket={props.socket} history={props.history}/>;
 
     return (
         <nav className="navbar navbar-dark bg-blue navbar-expand">
-          <span className="navbar-brand h1-lg">
+          <NavbarBrand  className=" text-white">
         BusTracker
-      </span>
+      </NavbarBrand>
             <ul className="navbar-nav mr-auto">
                 <NavItem>
                     <NavLink to="/search" exact={true} activeClassName="active" className="nav-link">Search Bus</NavLink>
@@ -66,8 +68,8 @@ export function Session(props) {
                 <NavItem>
                     <NavLink to="/favourites" href="#" className="nav-link">Favourites</NavLink>
                 </NavItem>
+                    {session_info}
             </ul>
-            {session_info}
         </nav>
     );
 }
