@@ -11,9 +11,14 @@ export class SearchBus extends React.Component {
         super(props);
     }
 
-
     componentDidMount() {
         this.detectLocation();
+    }
+
+    componentWillUnmount()  {
+        this.props.dispatch({
+            type: "CLEAR_BUS_STOPS",
+        });
     }
 
     detectLocation() {

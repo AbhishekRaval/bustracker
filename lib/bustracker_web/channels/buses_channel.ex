@@ -38,6 +38,7 @@ defmodule BustrackerWeb.BusesChannel do
   end
 
   def terminate(_reason, socket) do
+    IO.puts "Terminate called"
     busid = socket.assigns["busid"]
     pid = Bustracker.BusinfoGens.bus_pid(busid)
     Bustracker.BusinfoGens.handle_leave(pid)

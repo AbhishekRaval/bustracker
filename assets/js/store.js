@@ -162,6 +162,8 @@ function listStops(state = list_of_stops, action) {
             return Object.assign({}, state, {busStops: action.busStops});
         case 'SET_LOCATION':
             return Object.assign({}, state, {coords: action.coords});
+        case 'CLEAR_BUS_STOPS':
+            return list_of_stops;
         default:
             return state;
     }
