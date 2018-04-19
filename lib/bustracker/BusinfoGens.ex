@@ -1,5 +1,8 @@
 defmodule Bustracker.BusinfoGens do
   use GenServer
+  alias Bustracker.Repo
+  alias Bustracker.Stops
+  alias Bustracker.Stops.Stop
 
   def start_link(tripid) do
     all_stops = fetch_all_busstops(tripid)
@@ -96,7 +99,9 @@ defmodule Bustracker.BusinfoGens do
             |> handle_response
     Enum.map(schedules, fn (x) -> %{"stopid" => x["relationships"]["stop"]["data"]["id"],
                                     "stopname" => fetch_stopname(x["relationships"]["stop"]["data"]["id"]),
-                                    "stopseq" => x["attributes"]["stop_sequence"]}end)
+                                    "stopseq" => x["attributes"]["stop_sequence"],
+                                    "latitude" => Stops.get_stop_latitude_by_stopid(x["relationships"]["stop"]["data"]["id"]),
+                                    "longitude" => Stops.get_stop_longitude_by_stopid(x["relationships"]["stop"]["data"]["id"])}end)
   end
 
   def fetch_stopname(stopid) do

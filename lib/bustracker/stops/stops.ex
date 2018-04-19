@@ -37,6 +37,15 @@ defmodule Bustracker.Stops do
   """
   def get_stop!(id), do: Repo.get!(Stop, id)
 
+  def get_stop_latitude_by_stopid(id) do
+    stop = Repo.get_by(Stop, stopid: id)
+    stop.latitude
+  end
+  def get_stop_longitude_by_stopid(id) do
+    stop = Repo.get_by(Stop, stopid: id)
+    stop.longitude
+  end
+
   @doc """
   Creates a stop.
 
