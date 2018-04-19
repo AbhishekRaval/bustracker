@@ -4,6 +4,7 @@ import {Link, Route, Redirect} from 'react-router-dom';
 import {Button, Card, CardTitle, CardText, CardBody} from 'reactstrap';
 import {connect} from 'react-redux';
 import api from '../api';
+import Map from './map';
 
 class BusTracking extends React.Component {
 
@@ -27,6 +28,7 @@ class BusTracking extends React.Component {
 
         var bus = this.props.bus;
         var bus_stops = this.props.bus_stops
+        var bus_coords = {lat: bus.latitude, lng: bus.longitude}
 
         return (<div className="wrappernew h-100">
             <div className="d-flex h-100">
@@ -54,6 +56,7 @@ class BusTracking extends React.Component {
                             </CardBody>
                         </Card>
                     </div>
+                    <div className="row mt-5"><Map bus_coords={bus_coords} apiKey={"AIzaSyCOtyRHvosWiK3eFuaKO5ETx3nmk0ty8dQ"}/></div>
                 </div>
                 <div className="d-flex align-items-center ml-5 h-100 col-6">
                     <div className="row h-75">

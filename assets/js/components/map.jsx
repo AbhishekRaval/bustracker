@@ -6,9 +6,7 @@ const style = {
     height: '60%'
 }
 
-
-
-export class MapContainer extends React.Component {
+function MapContainer(props) {
     //
     // state = {
     //     showingInfoWindow: false,
@@ -32,19 +30,19 @@ export class MapContainer extends React.Component {
     //     }
     // };
 
-    render() {
-        return (
-            <Map google={this.props.google}
+    // render() {
+
+        console.log(props);
+
+        return <Map google={props.google}
                  zoom={12}
                  style={style}
-                 onReady={this.fetchPlaces}
-                 center={{
-                     lat: 37.778519, lng: -122.405640
-                 }}>
+                 onReady={props.fetchPlaces}
+                    >
                 <Marker
                     title={'Bus is Here'}
                     name={'Your position'}
-                    position={{lat: 37.762391, lng: -122.439192}}
+                    position={{lat: props.bus_coords.lat, lng: props.bus_coords.lng}}
                     icon={{
                         url: "/images/bus.png",
                         anchor: new google.maps.Point(32, 32),
@@ -75,11 +73,11 @@ export class MapContainer extends React.Component {
                         {/*<h1>{this.state.selectedPlace.name}</h1>*/}
                     {/*</div>*/}
                 {/*</InfoWindow>*/}
-            </Map>
-        );
-    }
+            </Map>;
+        // );
+    // }
 }
 
-export default GoogleApiWrapper({
-    apiKey: ('AIzaSyCOtyRHvosWiK3eFuaKO5ETx3nmk0ty8dQ')
-})(MapContainer)
+export default GoogleApiWrapper(props => props)(MapContainer)
+
+// {apiKey: ('AIzaSyCOtyRHvosWiK3eFuaKO5ETx3nmk0ty8dQ')}
