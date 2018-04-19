@@ -170,7 +170,9 @@ function listStops(state = list_of_stops, action) {
 function bus_live(state = {}, action)   {
     switch (action.type)    {
         case 'UPDATE_BUS_INFORMATION':
-            return Object.assign({}, {bus: action.bus}, {bus_stops: action.bus_stops});
+            return Object.assign({}, {bus: action.bus}, {bus_stops: action.bus_stops}, {channel: action.channel});
+        case 'CLEAR_BUS_LIVE':
+            return {};
         default:
             return state;
     }

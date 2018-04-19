@@ -56,7 +56,7 @@ class BusTracking extends React.Component {
                     </div>
                 </div>
                 <div className="d-flex align-items-center ml-5 h-100 col-6">
-                    <div className="row">
+                    <div className="row h-75">
                         <ul className="StepProgress ">
                             {bus_stops.map((bus_stop) => {
                                 if (bus_stop.stopseq < bus.current_stop_sequence)   {
@@ -75,6 +75,22 @@ class BusTracking extends React.Component {
             </div>
         </div>);
     }
+
+
+    componentWillUnmount()  {
+
+        if (this.props.channel == null)
+            return;
+
+        console.log("Component Unmounted");
+        this.props.dispatch({
+            type: "CLEAR_BUS_LIVE",
+        })
+
+        this.props.channel.leave();
+    }
+
+
 }
 
 export default connect(({

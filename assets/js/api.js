@@ -140,7 +140,8 @@ class ApiFunctions {
             store.dispatch({
                 type: "UPDATE_BUS_INFORMATION",
                 bus: payload.bus,
-                bus_stops: payload.all_stops
+                bus_stops: payload.all_stops,
+                channel: channel
             });
         })
     }
