@@ -47,7 +47,7 @@ function MapContainer(props) {
                 // }}
                  zoom={13}
                  style={style}
-                className={'ml-md-5 mt-md-1'}>
+                className={'ml-md-5 ml-2 mt-md-1'}>
                 <Marker
                     title={'Bus is Here'}
                     name={'Your position'}

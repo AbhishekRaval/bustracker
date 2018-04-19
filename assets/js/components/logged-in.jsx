@@ -25,7 +25,16 @@ export default class LoggedIn extends React.Component {
           <div className="container2">
             <Nav name={this.props.profile.username} socket={this.props.session.socket} history={this.props.history} />
             <Route path="/" exact={true} render={() => {
-                return <div className="h-25 w-25"></div>;
+                return<div className="flex justify-content-center mt-4 text-dark">
+                        <h3>Welcome to MBTA Bus Tracker Application.</h3>
+                    <ul>
+                    <li>Click on Search Bus to fetch buses near your Location, Make sure you allow location settings.</li>
+                    <li>If you're on mobile, please turn on your GPS.</li>
+                    <li>After Clicking on search bus, it will show you all the bus stos in your area, And all the routes accessible through it.
+                    Please Favourite a route, to track it any time by clicking a star next to route. On clicking the route, it will show you all the buses.
+                    You May Click Track button to track the bus</li>
+                    </ul>
+                        </div>;
                 }}/>
                 <Route path="/favourites" exact={true} render={() => <FavouriteView />}/>
                 <Route path="/search" exact={true} render={() => <SearchBus channel={this.props.session.channel}

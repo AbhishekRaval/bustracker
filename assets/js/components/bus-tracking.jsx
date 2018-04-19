@@ -32,7 +32,7 @@ class BusTracking extends React.Component {
 
         return ( <div className=" h-100 row">
                     <div className="col d-flex flex-column justify-content-md-center">
-                        <div className="col col-md-4 d-flex ml-md-5 ">
+                        <div className="col col-md-4 d-flex ml-md-5 ml-2">
                             <div className="row align-items-center  h-100">
                                 <Card  className="text-white bg-blue">
                                     <CardBody>
@@ -57,7 +57,7 @@ class BusTracking extends React.Component {
                             </div>
                         </div>
                     </div>
-                <div className="ml-mt-3 col wrappernew d-flex align-items-center ">
+                <div className="mt-md-5 col wrappernew d-flex align-items-center ">
                         <div className="row h-100">
                             <ul className="StepProgress ml-md-5">
                                 {bus_stops.map((bus_stop) => {
