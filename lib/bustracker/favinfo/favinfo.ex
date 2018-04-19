@@ -24,7 +24,7 @@ defmodule Bustracker.Favinfo do
   def favs_map_for(user_id) do
     Repo.all(from fav in Fav,
       where: fav.user_id == ^user_id)
-      |> Enum.map(fn(x) -> %{"route_id" => x.route_id, "fav_id" => x.id, "stop_id" => x.stop_id} end)
+      |> Enum.map(fn(x) -> %{"route_id" => x.route_id, "fav_id" => x.id, "stop_id" => Integer.to_string(x.stop_id)} end)
 
   end
   @doc """

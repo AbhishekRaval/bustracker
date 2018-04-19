@@ -35,7 +35,7 @@ defmodule BustrackerWeb.TravellersChannel do
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
       { :ok, fav } = Favinfo.create_fav(%{"user_id" => userid, "route_id" => routeid, "stop_id" => stop_id})
-        {:reply, {:ok, %{ "fav" => %{"route_id" => fav.route_id, "fav_id" => fav.id, "stop_id" => fav.stop_id }}}, socket}
+        {:reply, {:ok, %{ "fav" => %{"route_id" => fav.route_id, "fav_id" => fav.id, "stop_id" => Integer.to_string(fav.stop_id) }}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end
