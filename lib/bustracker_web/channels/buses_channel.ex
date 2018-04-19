@@ -49,6 +49,7 @@ defmodule BustrackerWeb.BusesChannel do
     busid = socket.assigns["busid"]
     pid = Bustracker.BusinfoGens.bus_pid(busid)
     Bustracker.BusinfoGens.handle_leave(pid)
+    
   end
 
   # Channels can be used in a request/response fashion

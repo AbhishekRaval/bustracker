@@ -13,8 +13,8 @@ defmodule Bustracker.BusinfoGens do
     |> handle_response
   end
 
-  def bus_pid(busid) do
-    busid
+  def bus_pid(tripid) do
+    tripid
     |> via_tuple()
     |> GenServer.whereis()
   end
@@ -24,8 +24,8 @@ defmodule Bustracker.BusinfoGens do
     GenServer.cast(pid, {:increment_count, 1})
   end
 
-  def via_tuple(busid) do
-    {:via, Registry, {Bustracker.BusRegistry, busid}}
+  def via_tuple(tripid) do
+    {:via, Registry, {Bustracker.BusRegistry, tripid}}
   end
 
   def handle_cast({:increment_count, 1}, state) do
@@ -48,6 +48,7 @@ defmodule Bustracker.BusinfoGens do
     IO.inspect(countc)
     state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc, "all_stops" => state["all_stops"]}
     if countc == 0 do
+      Bustracker.BusSupervisor.stop_bustracking(state["id"])
       {:stop, "NO USERS TRACKING THIS BUS", state1}
     else
       {:noreply, state1}
