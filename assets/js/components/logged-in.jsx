@@ -5,7 +5,7 @@ import {SearchBus} from "./searchbus";
 import {Accordion, AccordionItem} from 'react-sanfona';
 import FavouriteView from './favourites';
 import BusTracking from './bus-tracking';
-
+import Map from './map';
 export default class LoggedIn extends React.Component {
 
   constructor(props) {
@@ -25,7 +25,7 @@ export default class LoggedIn extends React.Component {
           <div className="container2">
             <Nav name={this.props.profile.username} socket={this.props.session.socket} history={this.props.history} />
             <Route path="/" exact={true} render={() => {
-              return <div className="h-75 w-100">This should be the profile page </div>;
+                return <div className="h-25 w-25"><div className="row justify-content-center mt-2"><Map /></div></div>;
                 }}/>
                 <Route path="/favourites" exact={true} render={() => <FavouriteView />}/>
                 <Route path="/search" exact={true} render={() => <SearchBus channel={this.props.session.channel}
