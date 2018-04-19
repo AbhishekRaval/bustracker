@@ -8,6 +8,7 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "deep-freeze": "0.0.1",
+    "google-maps-react": "^2.0.0",
     "history": "4.7.2",
     "jquery": "^3.3.1",
     "loading-svg": "^1.0.0",
