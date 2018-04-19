@@ -40,7 +40,6 @@ let LoginForm = connect(({login}) => {
 
 export function Session(props) {
 
-    console.log(props);
     function logout(ev) {
         api.logout(props.socket, props.history);
     }

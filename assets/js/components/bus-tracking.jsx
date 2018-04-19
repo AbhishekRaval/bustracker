@@ -41,7 +41,7 @@ class BusTracking extends React.Component {
 
                             <CardBody>
                                 <CardText>
-                                    Heading Towards: {bus_stops[bus_stops.length - 1].stopname}
+                                    Heading Towards: { bus_stops[bus_stops.length - 1].stopname}
                                 </CardText>
                                 <CardText>
                                     Current Status: {bus.current_status}
