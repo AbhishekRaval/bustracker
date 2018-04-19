@@ -30,22 +30,22 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
-  def handle_in("addfav", %{"route_id" => routeid}, socket) do
+  def handle_in("addfav", %{"route_id" => routeid, "stop_id" => stop_id}, socket) do
     token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-      { :ok, fav } = Favinfo.create_fav(%{"user_id" => userid, "route_id" => routeid, "direction_id" => 0})
-        {:reply, {:ok, %{ "fav" => %{"route_id" => fav.route_id, "fav_id" => fav.id, "direction_id" => fav.direction_id }}}, socket}
+      { :ok, fav } = Favinfo.create_fav(%{"user_id" => userid, "route_id" => routeid, "stop_id" => stop_id})
+        {:reply, {:ok, %{ "fav" => %{"route_id" => fav.route_id, "fav_id" => fav.id, "stop_id" => fav.stop_id }}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end
   end
 
-  def handle_in("delfav", %{"route_id" => route_id }, socket) do
+  def handle_in("delfav", %{"route_id" => route_id, "stop_id" => stop_id }, socket) do
     token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
-        {:ok, favs} = Favinfo.delete_fav(userid, route_id)
+        {:ok, favs} = Favinfo.delete_fav(userid, route_id, stop_id)
         {:reply, {:ok, %{}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}

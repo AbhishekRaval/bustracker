@@ -61,9 +61,6 @@ export function Session(props) {
       </span>
             <ul className="navbar-nav mr-auto">
                 <NavItem>
-                    <NavLink to="/" exact={true} activeClassName="active" className="nav-link">Profile</NavLink>
-                </NavItem>
-                <NavItem>
                     <NavLink to="/search" exact={true} activeClassName="active" className="nav-link">Search Bus</NavLink>
                 </NavItem>
                 <NavItem>

@@ -87,14 +87,16 @@ function profile(state = user_profile, action) {
     }
 }
 
-function favourite(state = {favs: [], favs_live: []}, action)  {
-    switch (action.type)    {
+function favourite(state = {favs: [], favs_live: []}, action) {
+    switch (action.type) {
         case 'ADD_FAVOURITE':
             return Object.assign({}, state, {favs: [action.fav, ...state.favs]});
         case 'SET_FAVOURITES':
             return Object.assign({}, state, {favs: action.favs});
         case 'REMOVE_FAVOURITE':
-            let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id))
+            console.log(action.data)
+            let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id && fav.stop_id == action.data.stop_id))
+            console.log(favs);
             return Object.assign({}, state, {favs: favs})
         case 'SET_FAVOURITES_LIVE':
             return Object.assign({}, state, {favs_live: action.favs_live});
@@ -151,8 +153,8 @@ function listStops(state = list_of_stops, action) {
     }
 }
 
-function bus_live(state = {}, action)   {
-    switch (action.type)    {
+function bus_live(state = {}, action) {
+    switch (action.type) {
         case 'UPDATE_BUS_INFORMATION':
             return Object.assign({}, {bus: action.bus}, {bus_stops: action.bus_stops}, {channel: action.channel});
         case 'CLEAR_BUS_LIVE':
