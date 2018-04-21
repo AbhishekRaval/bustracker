@@ -62,6 +62,15 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
+  def handle_in("bus_to_from", %{"from" => from, "to" => to}, socket) do
+    IO.puts "Handle_in called"
+    case Phoenix.Token.verify(socket, "token", socket.assigns[:token], max_age: 86400) do
+      {:ok, userid} ->
+        {:reply, {:ok, %{"bus_to_from" => Fetchjson.fetchToFrom(from, to)}}, socket}
+      {:error, :expired} ->
+        {:error, %{reason: "Not logged in"}}
+    end
+  end
 
   def handle_in("fav_live_info", _params, socket) do
     token = socket.assigns[:token]
