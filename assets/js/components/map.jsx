@@ -12,7 +12,7 @@ function MapContainer(props) {
                     lat: props.bus_coords.lat,
                     lng: props.bus_coords.lng
                 }}
-                 zoom={13}
+                 zoom={17}
                  style={style}
                 className={'ml-md-5 ml-2 mt-md-1'}>
                 <Marker
@@ -21,8 +21,8 @@ function MapContainer(props) {
                     position={{lat: props.bus_coords.lat, lng: props.bus_coords.lng}}
                     icon={{
                         url: "/images/bus.png",
-                        anchor: new google.maps.Point(70,70),
-                        scaledSize: new google.maps.Size(42,42)
+                        anchor: new google.maps.Point(32,32),
+                        scaledSize: new google.maps.Size(32,32)
                     }}/>
             </Map>;
 }

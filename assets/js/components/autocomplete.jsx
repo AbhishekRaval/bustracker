@@ -41,7 +41,6 @@ class MaterialUIAutocomplete extends Component {
     }
 
     render() {
-        console.log(this.props);
         var v = this.props.auto_bus_stops.auto_bus_stops
 
         return <div className="d-flex h-100 py-5">
@@ -75,6 +74,5 @@ class MaterialUIAutocomplete extends Component {
 }
 
 export default connect(({auto_bus_stops, session, results, favourite}) => {
-    console.log(favourite);
     return Object.assign({}, {auto_bus_stops: auto_bus_stops}, {session: session}, {results: results}, {favs: favourite.favs})
 })(MaterialUIAutocomplete)

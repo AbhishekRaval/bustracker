@@ -48,7 +48,7 @@ export class SearchBus extends React.Component {
                     <div className="row justify-content-center h-50">
                         <img src="images/Ripple-1s-200px.svg" height="120%" width="110%" alt="Loading icon"/>
                     </div>
-                    <div className="text-center font-weight-bold h5 mt-3">Fetching Bus Stops near your location, please
+                    <div className="text-center font-weight-bold h5 mt-5">Fetching Bus Stops near your location, please
                         wait.</div>
                 </div>
             </div>
@@ -59,7 +59,7 @@ export class SearchBus extends React.Component {
               <div className="d-flex h-100">
                 <div className="d-flex flex-column mx-auto py-2 w-100">
                   <h3 className="row justify-content-center mx-3"><Button onClick={this.detectLocation.bind(this)}>
-                    Detect Location
+                    Update New Location
                   </Button>
                   </h3>
 

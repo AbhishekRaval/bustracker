@@ -44,7 +44,7 @@ export function Session(props) {
     }
 
     return <div className="navbar-text">
-        Logged in as: {props.name} |
+        {props.name} |
         <Link to="/" className="ml-2 text-white btn btn-link" onClick={logout}>Logout</Link>
     </div>;
 }
