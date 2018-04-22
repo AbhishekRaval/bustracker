@@ -66,6 +66,9 @@ export function Session(props) {
                 <NavItem>
                     <NavLink to="/favourites" href="#" className="nav-link">Favourites</NavLink>
                 </NavItem>
+                <NavItem>
+                    <NavLink to="/to-from/" href="#" className="nav-link">TO_FROM</NavLink>
+                </NavItem>
             </ul>
             {session_info}
         </nav>

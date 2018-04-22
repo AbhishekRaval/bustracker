@@ -161,6 +161,27 @@ class ApiFunctions {
             });
         })
     }
+
+    fetch_results(channel, data)    {
+        channel.push("bus_to_from", data).receive("ok", (resp) => {
+             store.dispatch({
+                     type: 'SET_RESULTS',
+                     results: resp.results
+             })
+        });
+    }
+
+    fetch_auto_bus_stops(channel) {
+        console.log("Fetch Auto bus stops");
+        channel.push("auto_bus_stops").receive("ok", resp => {
+            store.dispatch(
+                {
+                     type: 'SET_AUTO_BUS_STOPS',
+                     bus_stops: resp.auto_bus_stops
+                }
+            )
+        })
+    }
 }
 
 export default new ApiFunctions();

@@ -5,6 +5,7 @@ defmodule BustrackerWeb.TravellersChannel do
   alias Bustracker.Favinfo
   alias Bustracker.Fetchjson
   alias Bustracker.Favinfo.Fav
+  alias Bustracker.Stops
 
   def join("travellers:lobby", payload, socket) do
     if authorized?(payload) do
@@ -52,11 +53,30 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
+  def handle_in("bus_to_from", %{"from" => from, "to" => to}, socket) do
+    IO.puts "Handle_in called"
+    case Phoenix.Token.verify(socket, "token", socket.assigns[:token], max_age: 86400) do
+      {:ok, userid} ->
+        {:reply, {:ok, %{"results" => Fetchjson.fetchToFrom(to, from)}}, socket}
+      {:error, :expired} ->
+        {:error, %{reason: "Not logged in"}}
+    end
+  end
+
   def handle_in("bus_stops", %{"latitude" => latitude, "longitude" => longitude}, socket) do
     IO.puts "Handle_in called"
     case Phoenix.Token.verify(socket, "token", socket.assigns[:token], max_age: 86400) do
       {:ok, userid} ->
         {:reply, {:ok, %{"bus_stops" => Fetchjson.fetch(latitude, longitude)}}, socket}
+      {:error, :expired} ->
+        {:error, %{reason: "Not logged in"}}
+    end
+  end
+
+  def handle_in("auto_bus_stops", %{}, socket) do
+    case Phoenix.Token.verify(socket, "token", socket.assigns[:token], max_age: 86400) do
+      {:ok, userid} ->
+        {:reply, {:ok, %{"auto_bus_stops" => Stops.get_stops()}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}
     end

@@ -31,7 +31,7 @@ export function route(props) {
               props.routes.map(route => {
                 return (<AccordionItem title={<span className="react-sanfona-item-title2 text-center">
                   <Button className="routeid mt-2 text-white" color="link">Route Number: {route.routeid}</Button>
-                  {props.favs.some(fav => fav.route_id === route.routeid && fav.stop_id === stop_id)
+                  {props.favs.some(fav => fav.route_id === route.routeid && fav.stop_id == stop_id)
                     ? <Button className="material-icons colorstar routeid md-36 float-right"
                       color="link"
                       onClick={(e) => delfav(route.routeid, stop_id ,e)}>

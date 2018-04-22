@@ -14,6 +14,54 @@ defmodule Bustracker.Fetchjson do
     "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.003"<>"&api_key=250808d6ad5140889bde5176bcb5392c"
   end
 
+  def fetchToFrom(from, to) do
+    "https://api-v3.mbta.com/stops?filter[id]="<>from<>"&filter[route_type]=3&api_key=250808d6ad5140889bde5176bcb5392c"
+    |> HTTPoison.get
+    |> handle_response
+    |> extractByTo(to)
+  end
+
+  defp extractByTo(stops, to) do
+    Enum.map(stops, fn (x) -> %{"stopid" => x["id"], "stopname" => x["attributes"]["name"],
+                                "catbuses" => fetch_buses_to(x["id"], to)} end)
+  end
+
+  def fetch_buses_to(stopid, to) do
+    "https://api-v3.mbta.com/routes?api_key=250808d6ad5140889bde5176bcb5392c&filter[stop]="<>stopid
+    |> HTTPoison.get
+    |> handle_response
+    |> extractRouteids
+    |> extractTo(to)
+    |> extractBusesTo(stopid, to)
+  end
+
+  def extractTo(list1, to) do
+    list2 = "https://api-v3.mbta.com/routes?api_key=250808d6ad5140889bde5176bcb5392c&filter[stop]="<>to
+            |> HTTPoison.get
+            |> handle_response
+            |> extractRouteids
+    list3 = list1 -- list2
+    result = list1 -- list3
+    # https://kmrakibulislam.wordpress.com/2015/10/25/find-common-items-in-two-lists-in-elixir/
+    result
+  end
+
+  defp extractBusesTo(routeidlist, stopid, to) do
+    rlist = Enum.filter(routeidlist, fn(x) -> extractStopSeq(x["id"], stopid) < extractStopSeq(x["id"], to) end)
+    Enum.map(rlist, fn (x) -> %{"routeid" => x["id"],"route_name" => x["rname"],
+                                "buses" => fetch_vehicleDetails(x["id"], stopid),
+                                "directionid" => fetch_directions(x["id"], stopid)} end)
+  end
+
+  defp extractStopSeq(rid, sid) do
+    rmap = "https://api-v3.mbta.com/predictions?api_key=250808d6ad5140889bde5176bcb5392c&filter[stop]="<>sid<>"&filter[route]="<>rid
+           |> HTTPoison.get
+           |> handle_response
+           |> Enum.at(0)
+    IO.inspect(rmap["attributes"]["stop_sequence"])
+    rmap["attributes"]["stop_sequence"]
+  end
+
   def fetch_buses(stopid) do
    "https://api-v3.mbta.com/routes?api_key=250808d6ad5140889bde5176bcb5392c&filter[stop]="<>stopid
     |> HTTPoison.get

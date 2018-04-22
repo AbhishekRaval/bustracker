@@ -37,6 +37,11 @@ defmodule Bustracker.Stops do
   """
   def get_stop!(id), do: Repo.get!(Stop, id)
 
+  def get_stops do
+    stops = list_stops
+    Enum.map(stops, fn stop -> %{ stop_id: stop.stopid, stop_name: stop.stopname} end)
+  end
+
   def get_stop_latitude_by_stopid(id) do
     stop = Repo.get_by(Stop, stopid: id)
     stop.latitude

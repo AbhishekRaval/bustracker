@@ -1,23 +1,6 @@
 import {createStore, combineReducers} from 'redux';
 import deepFreeze from 'deep-freeze';
 
-/*
-*  state layout:
-*  {
-*   tasks: [... tasks ...],
-*   users: [... Users ...],
-*   form: {
-*       user_id: "",
-name: "",
-description: "",
-assigns_id: "",
-complete: "",
-timespent: ""
-*   }
-* }
-*
-* */
-
 let empty_form = {
     user_id: "",
     name: "",
@@ -164,8 +147,32 @@ function bus_live(state = {}, action) {
     }
 }
 
+var bus_stops = {
+    auto_bus_stops: []
+}
+
+function auto_bus_stops(state = bus_stops, action)  {
+    switch(action.type) {
+        case 'SET_AUTO_BUS_STOPS':
+            return Object.assign({}, {auto_bus_stops: action.bus_stops});
+        default:
+            return bus_stops;
+    }
+}
+
+function results(state = {}, action)    {
+    switch(action.type) {
+        case 'SET_RESULTS':
+            return Object.assign({}, {results: action.results});
+        case 'CLEAR_RESULTS':
+            return {};
+        default:
+            return {};
+    }
+}
+
 function root_reducer(state0, action) {
-    let reducer = combineReducers({form, edit_form, login, register, profile, session, listStops, favourite, bus_live});
+    let reducer = combineReducers({form, edit_form, login, register, profile, session, listStops, favourite, bus_live, auto_bus_stops, results});
     let state1 = reducer(state0, action);
     return state1;
 };

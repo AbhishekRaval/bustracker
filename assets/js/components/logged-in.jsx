@@ -6,6 +6,9 @@ import {Accordion, AccordionItem} from 'react-sanfona';
 import FavouriteView from './favourites';
 import BusTracking from './bus-tracking';
 import Map from './map';
+
+import Autocomplete from './autocomplete';
+
 export default class LoggedIn extends React.Component {
 
   constructor(props) {
@@ -34,6 +37,7 @@ export default class LoggedIn extends React.Component {
                                                                             favs={this.props.favourite.favs} /> } />
                 <Route path="/buses/:id" exact={true}
                        render={(props) => <BusTracking bus_id={props.match.params.id} />}/>
+                <Route path="/to-from/" exact={true} render={() => <Autocomplete />} />
             </div>
         </Router>;
     }

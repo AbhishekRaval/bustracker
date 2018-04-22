@@ -21,6 +21,7 @@ function bus(props) {
         return diff;
     }
 
+    console.log(props);
     return <div>
       <Card>
         <CardBody>
