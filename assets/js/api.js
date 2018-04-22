@@ -19,7 +19,6 @@ class ApiFunctions {
     }
 
     reconnect() {
-        console.log("Trying to reconnect");
         if (localStorage.getItem("token") != null) {
             let token = localStorage.getItem("token");
             let socket = new Socket("/socket", {params: {token: token}});
@@ -35,11 +34,8 @@ class ApiFunctions {
     }
 
     fetch_bus_stops(channel, position)    {
-        console.log("fetch bus stops called");
         let coordinates = {"latitude" : position.coords.latitude, "longitude" : position.coords.longitude};
         channel.push("bus_stops", coordinates).receive("ok", payload => {
-          console.log("Callback called");
-          console.log(payload);
             store.dispatch({
                 type: "SET_BUS_STOPS",
                 busStops: payload.bus_stops
@@ -65,7 +61,6 @@ class ApiFunctions {
     }
 
     fetch_information_without_token(socket, token) {
-        console.log("fetch_information_without_token");
         let channel = socket.channel("travellers:lobby");
         channel.join();
         store.dispatch({
@@ -139,10 +134,7 @@ class ApiFunctions {
     }
 
     fetch_live_information(channel) {
-        console.log("Fetching Live Information");
-
         channel.push("fetchbusdata").receive("ok", (payload) => {
-            console.log("Live data is" , payload);
             store.dispatch({
                 type: "UPDATE_BUS_INFORMATION",
                 bus: payload.bus,
@@ -152,7 +144,6 @@ class ApiFunctions {
         })
 
         channel.on("update_bus", (payload) => {
-
             store.dispatch({
                 type: "UPDATE_BUS_INFORMATION",
                 bus: payload.bus,
@@ -172,7 +163,6 @@ class ApiFunctions {
     }
 
     fetch_auto_bus_stops(channel) {
-        console.log("Fetch Auto bus stops");
         channel.push("auto_bus_stops").receive("ok", resp => {
             store.dispatch(
                 {
@@ -185,3 +175,5 @@ class ApiFunctions {
 }
 
 export default new ApiFunctions();
+
+//Reference: http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/20-redux/notes.html

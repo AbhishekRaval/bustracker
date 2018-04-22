@@ -6,19 +6,15 @@ defmodule Bustracker.Fetchjson do
     |> extract
   end
 
-  # def url(id) do
-  #   "https://api-v3.mbta.com/stops?filter[route_type]=3"
-  # end
-
-  def url(latitude, longitude) do
-    "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.003"<>"&api_key=250808d6ad5140889bde5176bcb5392c"
-  end
-
   def fetchToFrom(from, to) do
     "https://api-v3.mbta.com/stops?filter[id]="<>from<>"&filter[route_type]=3&api_key=250808d6ad5140889bde5176bcb5392c"
     |> HTTPoison.get
     |> handle_response
     |> extractByTo(to)
+  end
+
+  def url(latitude, longitude) do
+    "https://api-v3.mbta.com/stops?filter[route_type]=3&filter[latitude]="<>Float.to_string(latitude)<>"&filter[longitude]="<>Float.to_string(longitude)<>"&filter[radius]=0.003"<>"&api_key=250808d6ad5140889bde5176bcb5392c"
   end
 
   defp extractByTo(stops, to) do
@@ -58,7 +54,6 @@ defmodule Bustracker.Fetchjson do
            |> HTTPoison.get
            |> handle_response
            |> Enum.at(0)
-    IO.inspect(rmap["attributes"]["stop_sequence"])
     rmap["attributes"]["stop_sequence"]
   end
 
@@ -84,29 +79,14 @@ defmodule Bustracker.Fetchjson do
     tripmap["attributes"]["headsign"]
   end
 
-# <<<<<<< HEAD
-  # def fetch_predictions(tripid, stopid, routeid) do
-    # "https://api-v3.mbta.com/predictions?filter[stop]="<>stopid<>"&filter[trip]="<>tripid<>"&filter[route]="<>routeid<>"&include=vehicle&api_key=250808d6ad5140889bde5176bcb5392c"
-# =======
   def fetch_predictions(tripid, stopid) do
-    IO.puts "stopid:"<>stopid<>" tripid"<>tripid
     "https://api-v3.mbta.com/predictions?filter[stop]="<>stopid<>"&filter[trip]="<>tripid<>"&include=vehicle&api_key=250808d6ad5140889bde5176bcb5392c"
-# >>>>>>> bb20ad3b5f6c75eb9c0e2c7211e7a239ebbbd72e
     |> HTTPoison.get
     |> handle_response
     |> extractReqd
     |> Enum.at(0)
   end
 
-# <<<<<<< HEAD
-#   # def fetch_direction(routeid, stopid) do
-#   #   preds = "https://api-v3.mbta.com/predictions?filter[stop]="<>stopid<>"&filter[route]="<>routeid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
-#   #           |> HTTPoison.get
-#   #           |> handle_response
-#   #           |> Enum.at(0,%{"attributes" => %{"direction_id" => "2"}})
-#   #   preds["attributes"]["direction_id"]
-#   # end
-# =======
   def fetch_directions(routeid, stopid) do
     preds = "https://api-v3.mbta.com/predictions?filter[stop]="<>stopid<>"&filter[route]="<>routeid<>"&api_key=250808d6ad5140889bde5176bcb5392c"
             |> HTTPoison.get
@@ -114,7 +94,6 @@ defmodule Bustracker.Fetchjson do
             |> Enum.at(0,%{"attributes" => %{"direction_id" => "2"}})
     preds["attributes"]["direction_id"]
   end
-# >>>>>>> bb20ad3b5f6c75eb9c0e2c7211e7a239ebbbd72e
 
   defp extractReqd(plist) do
     avail = Enum.filter(plist, fn(x) -> x["relationships"]["vehicle"]["data"] end)
@@ -132,13 +111,8 @@ defmodule Bustracker.Fetchjson do
 
   defp extractBuses(routeidlist, stopid) do
     Enum.map(routeidlist, fn (x) -> %{"routeid" => x["id"],"route_name" => x["rname"],
-# <<<<<<< HEAD
-                                      # "buses" => fetch_vehicleDetails(x["id"])} end)
-# =======
                                       "buses" => fetch_vehicleDetails(x["id"], stopid),
                                       "directionid" => fetch_directions(x["id"], stopid)} end)
-# >>>>>>> bb20ad3b5f6c75eb9c0e2c7211e7a239ebbbd72e
-  # Enum.filter(buses, fn(x) -> x["directionid"] == x["buses"][])
   end
 
   defp extractRouteids(routes) do
@@ -168,14 +142,4 @@ defmodule Bustracker.Fetchjson do
     Enum.map(stops, fn(x) -> %{"stopname" => x["attributes"]["name"], "stopid" => x["id"]} end)
   end
 
-  # def fetchToAndFrom(toid, fromid) do
-  #   routes = "https://api-v3.mbta.com/routes?filter[route_type]=3&api_key=250808d6ad5140889bde5176bcb5392c"
-  #             |> HTTPoison.get
-  #             |> handle_response
-  #   Enum.filter(routes, fn (x) -> routeHasBoth?(x, toid, fromid) end)
-  # end
-  #
-  # def routeHasBoth?(x, to, from) do
-  #
-  # end
 end

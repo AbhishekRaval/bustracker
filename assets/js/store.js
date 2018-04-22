@@ -77,9 +77,7 @@ function favourite(state = {favs: [], favs_live: []}, action) {
         case 'SET_FAVOURITES':
             return Object.assign({}, state, {favs: action.favs});
         case 'REMOVE_FAVOURITE':
-            console.log(action.data)
             let favs = state.favs.filter(fav => !(fav.route_id === action.data.route_id && fav.stop_id == action.data.stop_id))
-            console.log(favs);
             return Object.assign({}, state, {favs: favs})
         case 'SET_FAVOURITES_LIVE':
             return Object.assign({}, state, {favs_live: action.favs_live});
@@ -156,7 +154,7 @@ function auto_bus_stops(state = bus_stops, action)  {
         case 'SET_AUTO_BUS_STOPS':
             return Object.assign({}, {auto_bus_stops: action.bus_stops});
         default:
-            return bus_stops;
+            return state;
     }
 }
 
@@ -167,7 +165,7 @@ function results(state = {}, action)    {
         case 'CLEAR_RESULTS':
             return {};
         default:
-            return {};
+            return state;
     }
 }
 

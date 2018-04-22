@@ -21,15 +21,16 @@ function bus(props) {
         return diff;
     }
 
-    console.log(props);
     return <div>
       <Card>
         <CardBody>
           <CardTitle>Bus Heading Towards - {props.bus.hs}</CardTitle>
           <CardText> Arriving at - {
             date(props.bus.preds.arrivalTime) > 0 ?  "In " + date(props.bus.preds.arrivalTime) + " minutes" : "Arriving Now" } </CardText>
+
           <CardText> Direction: {props.bus.preds.directionId === 1 ? "INBOUND" : "OUTBOUND"}</CardText>
           <Button  className="bg-blue-button" onClick={() => track(props.bus.tripid)}>TRACK</Button>
+
         </CardBody>
       </Card>
     </div>;

@@ -20,7 +20,6 @@ let LoginForm = connect(({login}) => {
 
     function create_token(ev) {
         api.submit_login(props.login);
-        console.log(props.login);
     }
 
     return <div className="navbar-text">
@@ -50,24 +49,24 @@ export function Session(props) {
     </div>;
 }
 
- function Nav(props) {
+function Nav(props) {
 
     let session_info = <Session name={props.name} socket={props.socket} history={props.history}/>;
 
     return (
         <nav className="navbar navbar-dark bg-blue navbar-expand">
-          <span className="navbar-brand h1-lg">
+          <NavLink to="/" exact={true} activeClassName="active"  className="navbar-brand h1">
         BusTracker
-      </span>
+          </NavLink>
             <ul className="navbar-nav mr-auto">
                 <NavItem>
                     <NavLink to="/search" exact={true} activeClassName="active" className="nav-link">Search Bus</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink to="/favourites" href="#" className="nav-link">Favourites</NavLink>
+                    <NavLink to="/favourites" href="#" className="nav-link">Favs</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink to="/to-from/" href="#" className="nav-link">TO_FROM</NavLink>
+                    <NavLink to="/to-from/" href="#" className="nav-link">Search Between Stops</NavLink>
                 </NavItem>
             </ul>
             {session_info}

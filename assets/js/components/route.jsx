@@ -1,5 +1,4 @@
 import React from 'react';
-import Task from './task';
 import {Accordion, AccordionItem} from 'react-sanfona';
 import {Button} from 'reactstrap';
 import {Link, Route, Redirect} from 'react-router-dom';
@@ -7,8 +6,6 @@ import Bus from './bus';
 import api from '../api';
 
 export function route(props) {
-
-    console.log(props);
 
     function addfav(route_id,stop_id, e) {
       e.stopPropagation();
@@ -48,8 +45,8 @@ export function route(props) {
                       {
                         route.buses.length === 0 ?
                           <div>No Buses are currently running in this route</div> :
-                          route.buses.map(bus => {
-                            return <Bus channel={props.channel} bus={bus}/>
+                          route.buses.map((bus, index) => {
+                            return <Bus channel={props.channel} bus={bus} key={index} />
                           })
                       }
                     </div>

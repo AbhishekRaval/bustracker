@@ -54,7 +54,6 @@ defmodule BustrackerWeb.TravellersChannel do
   end
 
   def handle_in("bus_to_from", %{"from" => from, "to" => to}, socket) do
-    IO.puts "Handle_in called"
     case Phoenix.Token.verify(socket, "token", socket.assigns[:token], max_age: 86400) do
       {:ok, userid} ->
         {:reply, {:ok, %{"results" => Fetchjson.fetchToFrom(to, from)}}, socket}
@@ -64,7 +63,6 @@ defmodule BustrackerWeb.TravellersChannel do
   end
 
   def handle_in("bus_stops", %{"latitude" => latitude, "longitude" => longitude}, socket) do
-    IO.puts "Handle_in called"
     case Phoenix.Token.verify(socket, "token", socket.assigns[:token], max_age: 86400) do
       {:ok, userid} ->
         {:reply, {:ok, %{"bus_stops" => Fetchjson.fetch(latitude, longitude)}}, socket}
@@ -82,13 +80,11 @@ defmodule BustrackerWeb.TravellersChannel do
     end
   end
 
-
   def handle_in("fav_live_info", _params, socket) do
     token = socket.assigns[:token]
     case Phoenix.Token.verify(socket, "token", token, max_age: 86400) do
       {:ok, userid} ->
         favs = Requesthandler.fetchfavslive_info(userid)
-        IO.inspect favs
         {:reply, {:ok, %{"favs_live" => favs}}, socket}
       {:error, :expired} ->
         {:error, %{reason: "Not logged in"}}

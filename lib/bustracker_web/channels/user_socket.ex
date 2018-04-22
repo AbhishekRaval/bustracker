@@ -26,9 +26,6 @@ defmodule BustrackerWeb.UserSocket do
 
 
   def connect(%{"register" => user_params}, socket) do
-    IO.puts "connect called"
-    IO.inspect user_params
-
     case Users.create_user(user_params) do
       {:ok, user} ->
         token = Phoenix.Token.sign(socket,"token", user.id)
@@ -39,7 +36,6 @@ defmodule BustrackerWeb.UserSocket do
   end
 
   def connect(%{"login" => user_params}, socket) do
-    IO.inspect user_params
     with {:ok, %User{} = user} <- Users.get_and_auth_user(user_params["emailid"], user_params["password"]) do
       case user do
         nil -> :error

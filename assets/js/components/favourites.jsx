@@ -28,7 +28,7 @@ class favouriteview extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+
     return <div className="mt-5">
       <div className="d-flex h-100">
         <div className="d-flex align-items-center justify-content-center w-100">
@@ -40,18 +40,18 @@ class favouriteview extends React.Component {
               :
               <Accordion>
                 {
-                  this.props.favs_live.map(fav => {
+                  this.props.favs_live.map((fav, index) => {
                     return (
                       <AccordionItem key={fav.route_id}
                         title={ "Route Number:" + fav.route_id}
                         expanded={fav === 1}
-                        className="card accordiontitle" key={fav.routeid}>
+                        className="card accordiontitle" key={index}>
                         <div className="card-body">
                           {
                             fav.buses.length === 0 ?
                               <div>No Buses are currently running in this route</div> :
-                              fav.buses.map(bus => {
-                                return <Bus channel={this.props.channel} bus={bus}/>
+                              fav.buses.map((bus, index2) => {
+                                return <Bus channel={this.props.channel} bus={bus} key={index2}/>
                               })
                           }
                         </div>

@@ -72,7 +72,7 @@ function LoginForm(props) {
 
   return <div className="d-flex  h-100 py-5 loginBackground">
     <div className="d-flex flex-column mx-auto">
-      <h3>Register to Bus Tracker App</h3>
+      <h3 className="text-center font-weight-bold h3 pt-3">Register to Bus Tracker App</h3>
       <div className="row justify-content-center">
 
         <Form className="mt-4">
@@ -117,7 +117,7 @@ function LoginForm(props) {
                   phone
                 </InputGroupText>
               </InputGroupAddon>
-              <Input type="number" name="phonenum" placeholder="phone" value={props.register.phonenum} onChange={update}/>
+              <Input type="tel" name="phonenum" placeholder="phone" value={props.register.phonenum} onChange={update}/>
             </InputGroup>
           </FormGroup>
 
@@ -135,3 +135,4 @@ function LoginForm(props) {
 export default withRouter(LoginForm);
 
 //Source: http://www.ccs.neu.edu/home/ntuck/courses/2018/01/cs4550/notes/20-redux/notes.html
+// References: regex.com

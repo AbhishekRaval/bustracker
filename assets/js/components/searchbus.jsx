@@ -30,9 +30,7 @@ export class SearchBus extends React.Component {
             api.fetch_favourites(thisObj.props.channel);
         };
 
-        let failure = function (err) {
-            console.log(err);
-        };
+        let failure = function (err) {};
 
         navigator.geolocation.getCurrentPosition(function () {
         }, function () {
@@ -50,8 +48,8 @@ export class SearchBus extends React.Component {
                     <div className="row justify-content-center h-50">
                         <img src="images/Ripple-1s-200px.svg" height="120%" width="110%" alt="Loading icon"/>
                     </div>
-                    <h3 className="pt-5 row justify-content-center">Fetching Bus Stops near your location, please
-                        wait.</h3>
+                    <div className="text-center font-weight-bold h5 mt-3">Fetching Bus Stops near your location, please
+                        wait.</div>
                 </div>
             </div>
         }

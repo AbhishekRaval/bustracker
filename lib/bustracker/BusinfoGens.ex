@@ -23,7 +23,6 @@ defmodule Bustracker.BusinfoGens do
   end
 
   def handle_join(pid) do
-    IO.puts("in handle join")
     GenServer.cast(pid, {:increment_count, 1})
   end
 
@@ -34,7 +33,6 @@ defmodule Bustracker.BusinfoGens do
   def handle_cast({:increment_count, 1}, state) do
     count = state["count"]
     countc = count + 1
-    IO.puts("count val:")
     state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc, "all_stops" => state["all_stops"]}
     {:noreply, state1}
   end
@@ -47,8 +45,6 @@ defmodule Bustracker.BusinfoGens do
   def handle_cast({:decrement_count, 1}, state) do
     count = state["count"]
     countc = count - 1
-    IO.puts("count val:")
-    IO.inspect(countc)
     state1 = %{"id" => state["id"], "bus" => state["bus"], "count" => countc, "all_stops" => state["all_stops"]}
     if countc == 0 do
       Bustracker.BusSupervisor.stop_bustracking(state["id"])
@@ -68,10 +64,7 @@ defmodule Bustracker.BusinfoGens do
   end
 
   def handle_info(:work, state) do
-    ##bus = get_bus(state["id"])
-    IO.inspect(state["id"])
     bus = fetch_current_bus_status(state["id"])
-    IO.inspect(bus)
     state = %{"id" => state["id"], "bus" => bus, "count" => state["count"], "all_stops" => state["all_stops"]}
     packet = %{"id" => state["id"], "bus" => bus, "all_stops" => state["all_stops"]}
     BustrackerWeb.Endpoint.broadcast!("buses:"<>state["id"], "update_bus", packet)

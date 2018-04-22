@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import LoggedOut from '../components/logged-out';
 import LoggedIn from '../components/logged-in';
 import api from '../api';
-import {withRouter} from "react-router-dom";
 
 class Index extends React.Component {
 

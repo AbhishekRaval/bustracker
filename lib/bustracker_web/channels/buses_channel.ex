@@ -14,24 +14,6 @@ defmodule BustrackerWeb.BusesChannel do
                 socket = assign(socket, "busid", id)
                 {:ok, socket}
       end
-
-
-      # if Bustracker.BusAgent.has_process?(id) do
-      #   pid = Bustracker.BusAgent.load(id)
-      #   IO.inspect(id)
-      #   IO.puts("insideload")
-      #   Bustracker.BusinfoGens.handle_join(pid)
-      #   socket = assign(socket, "busid", id)
-      #
-      #   {:ok, socket}
-      # else
-      #   # {:ok, pid} = Bustracker.BusinfoGens.start_link(id)
-      #   # Bustracker.BusAgent.save(id, pid)
-      #
-      #   Bustracker.BusinfoGens.handle_join(pid)
-      #   socket = assign(socket, "busid", id)
-      #   {:ok, socket}
-      # end
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -45,7 +27,6 @@ defmodule BustrackerWeb.BusesChannel do
   end
 
   def terminate(_reason, socket) do
-    IO.puts "Terminate called"
     busid = socket.assigns["busid"]
     pid = Bustracker.BusinfoGens.bus_pid(busid)
     Bustracker.BusinfoGens.handle_leave(pid)

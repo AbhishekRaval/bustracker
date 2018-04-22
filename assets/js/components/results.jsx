@@ -2,7 +2,6 @@ import React from 'react';
 import {route as BusRoute} from './route';
 
 export default function results(props) {
-    console.log(props);
 
     if (!props.results.results)
         return <div>Fill the Fields to get bus information</div>;
